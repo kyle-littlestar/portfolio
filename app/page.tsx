@@ -498,7 +498,7 @@ export default function Home() {
           <section className="hero">
             <div className="hero-left">
               <div>
-                <p className="hero-eyebrow fade-up delay-1">Portfolio — 2024</p>
+                <p className="hero-eyebrow fade-up delay-1">Portfolio — 2026</p>
                 <h1 className="hero-name fade-up delay-2">
                   Kyle<br /><em>Littlestar</em>
                 </h1>
