@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Nav } from "@/components/Nav";
 
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
@@ -462,14 +463,9 @@ export default function Home() {
 
       <div className={loaded ? "loaded" : ""}>
         {/* NAV */}
-        <nav>
-          <a href="/" className="nav-logo fade-up">KL</a>
-          <ul className="nav-links">
-            <li className="fade-up delay-1"><a href="#about">About</a></li>
-            <li className="fade-up delay-2"><a href="#contact">Contact</a></li>
-            <li className="fade-up delay-3"><a href="projects">Work</a></li>
-          </ul>
-        </nav>
+
+// Then inside your JSX, replace <nav>...</nav> with:
+<Nav activePage="home" />
 
         <main>
           {/* HERO */}

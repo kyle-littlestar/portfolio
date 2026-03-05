@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Nav } from "@/components/Nav";
 
 const projects = [
   {
@@ -489,14 +490,10 @@ export default function ProjectsPage() {
       `}</style>
 
       {/* NAV */}
-      <nav>
-        <a href="/" className="nav-logo">KL</a>
-        <ul className="nav-links">
-          <li><a href="/">About</a></li>
-          <li><a href="/projects" className="active">Work</a></li>
-          <li><a href="/#contact">Contact</a></li>
-        </ul>
-      </nav>
+      
+
+// Then inside your JSX, replace <nav>...</nav> with:
+<Nav activePage="home" />
 
       <main>
         {/* PAGE HEADER */}
