@@ -25,7 +25,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       - name: Deploy to S3
-        run: aws s3 sync ./out s3://my-portfolio-site --delete
+        run: aws s3 sync ./out s3://starslain --delete
       - name: Invalidate CloudFront cache
         run: |
           aws cloudfront create-invalidation \
