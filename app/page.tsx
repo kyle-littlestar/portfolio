@@ -467,6 +467,7 @@ export default function Home() {
           <ul className="nav-links">
             <li className="fade-up delay-1"><a href="#about">About</a></li>
             <li className="fade-up delay-2"><a href="#contact">Contact</a></li>
+            <li className="fade-up delay-3"><a href="projects">Work</a></li>
           </ul>
         </nav>
 
