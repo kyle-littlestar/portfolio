@@ -4,18 +4,9 @@ import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
-  const cursorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setLoaded(true);
-
-    const moveCursor = (e: MouseEvent) => {
-      if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate(${e.clientX - 6}px, ${e.clientY - 6}px)`;
-      }
-    };
-    window.addEventListener("mousemove", moveCursor);
-    return () => window.removeEventListener("mousemove", moveCursor);
   }, []);
 
   return (
@@ -37,7 +28,6 @@ export default function Home() {
           background: var(--cream);
           color: var(--ink);
           font-family: 'DM Mono', monospace;
-          cursor: none;
           overflow-x: hidden;
         }
 
@@ -49,18 +39,6 @@ export default function Home() {
           pointer-events: none;
           z-index: 100;
           opacity: 0.5;
-        }
-
-        .cursor {
-          position: fixed;
-          width: 12px;
-          height: 12px;
-          background: var(--accent);
-          border-radius: 50%;
-          pointer-events: none;
-          z-index: 9999;
-          transition: transform 0.1s ease;
-          mix-blend-mode: multiply;
         }
 
         .fade-up {
@@ -481,7 +459,6 @@ export default function Home() {
         }
       `}</style>
 
-      <div ref={cursorRef} className="cursor" />
 
       <div className={loaded ? "loaded" : ""}>
         {/* NAV */}
@@ -498,7 +475,6 @@ export default function Home() {
           <section className="hero">
             <div className="hero-left">
               <div>
-                <p className="hero-eyebrow fade-up delay-1">Portfolio — 2026</p>
                 <h1 className="hero-name fade-up delay-2">
                   Kyle<br /><em>Littlestar</em>
                 </h1>
@@ -576,9 +552,8 @@ export default function Home() {
               <div className="contact-links fade-up delay-2">
                 {[
                   { label: "Email", href: "mailto:hello@kylelittlestar.com" },
-                  { label: "Instagram", href: "#" },
-                  { label: "LinkedIn", href: "#" },
-                  { label: "Dribbble", href: "#" },
+                  { label: "Instagram", href: "https://www.instagram.com/star.slain/" },
+                  { label: "LinkedIn", href: "#" }
                 ].map((link, i) => (
                   <a key={link.label} href={link.href} className="contact-link">
                     <div className="contact-link-left">
@@ -594,7 +569,7 @@ export default function Home() {
         </main>
 
         <footer className="footer">
-          <span className="footer-copy">© 2024 Kyle Littlestar. All rights reserved.</span>
+          <span className="footer-copy">© 2026 Kyle Littlestar. All rights reserved.</span>
           <span className="footer-tagline">Type enthusiast & adventurist</span>
         </footer>
       </div>
