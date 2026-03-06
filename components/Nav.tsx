@@ -182,7 +182,7 @@ export function Nav({ activePage }: { activePage?: "home" | "projects" }) {
         <ul className="nav-links">
           <li><a href="/" className={activePage === "home" ? "active" : ""}>About</a></li>
           <li><a href="/projects" className={activePage === "projects" ? "active" : ""}>Work</a></li>
-          <li><a href="/#contact">Contact</a></li>
+          <li><a href="/contact" className={activePage === "contact" ? "active" : ""}>Contact</a></li>
         </ul>
 
         {/* Hamburger button */}
