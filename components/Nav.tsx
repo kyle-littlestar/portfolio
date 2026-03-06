@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-export function Nav({ activePage }: { activePage?: "home" | "projects" }) {
+export function Nav({ activePage }: { activePage?: "home" | "projects" | "contact" }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
