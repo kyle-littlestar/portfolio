@@ -35,7 +35,7 @@ function MediaBlock({ project, className = "" }: { project: Project; className?:
       }}
     >
       <span style={{
-        fontFamily: "'Cormorant Garamond', serif",
+        fontFamily: "var(--font-cormorant), serif",
         fontSize: "13px",
         letterSpacing: "0.16em",
         textTransform: "uppercase" as const,
@@ -60,12 +60,11 @@ export default function ProjectsPage() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap');
 
         :root {
           --cream: #F5F2ED;
           --ink: #1A1814;
-          --warm-gray: #8C8880;
+          --warm-gray: #6B6760;
           --accent: #C8593A;
           --border: #DDD9D3;
         }
@@ -75,7 +74,7 @@ export default function ProjectsPage() {
         body {
           background: var(--cream);
           color: var(--ink);
-          font-family: 'DM Mono', monospace;
+          font-family: var(--font-dm-mono), monospace;
           overflow-x: hidden;
         }
 
@@ -102,7 +101,7 @@ export default function ProjectsPage() {
         }
 
         .nav-logo {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: var(--font-cormorant), serif;
           font-size: 18px;
           font-weight: 600;
           letter-spacing: 0.02em;
@@ -139,7 +138,7 @@ export default function ProjectsPage() {
         }
 
         .page-title {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: var(--font-cormorant), serif;
           font-size: clamp(48px, 7vw, 96px);
           font-weight: 300;
           line-height: 0.9;
@@ -169,7 +168,7 @@ export default function ProjectsPage() {
         }
 
         .filter-btn {
-          font-family: 'DM Mono', monospace;
+          font-family: var(--font-dm-mono), monospace;
           font-size: 11px;
           letter-spacing: 0.1em;
           text-transform: uppercase;
@@ -236,7 +235,7 @@ export default function ProjectsPage() {
         }
 
         .featured-title {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: var(--font-cormorant), serif;
           font-size: 52px;
           font-weight: 300;
           line-height: 1;
@@ -246,7 +245,7 @@ export default function ProjectsPage() {
         }
 
         .featured-description {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: var(--font-cormorant), serif;
           font-size: 20px;
           font-weight: 300;
           line-height: 1.6;
@@ -269,7 +268,7 @@ export default function ProjectsPage() {
           display: inline-flex;
           align-items: center;
           gap: 12px;
-          font-family: 'DM Mono', monospace;
+          font-family: var(--font-dm-mono), monospace;
           font-size: 11px;
           letter-spacing: 0.12em;
           text-transform: uppercase;
@@ -348,7 +347,7 @@ export default function ProjectsPage() {
         }
 
         .project-card-title {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: var(--font-cormorant), serif;
           font-size: 28px;
           font-weight: 300;
           line-height: 1.1;
@@ -357,7 +356,7 @@ export default function ProjectsPage() {
         }
 
         .project-card-description {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: var(--font-cormorant), serif;
           font-size: 15px;
           font-weight: 300;
           line-height: 1.5;
@@ -372,7 +371,7 @@ export default function ProjectsPage() {
           grid-column: 1 / -1;
           padding: 80px;
           text-align: center;
-          font-family: 'Cormorant Garamond', serif;
+          font-family: var(--font-cormorant), serif;
           font-size: 24px;
           font-style: italic;
           color: var(--warm-gray);
@@ -394,7 +393,7 @@ export default function ProjectsPage() {
         }
 
         .footer-tagline {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: var(--font-cormorant), serif;
           font-size: 13px;
           font-style: italic;
           color: var(--warm-gray);

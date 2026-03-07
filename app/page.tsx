@@ -13,12 +13,11 @@ export default function Home() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap');
 
         :root {
           --cream: #F5F2ED;
           --ink: #1A1814;
-          --warm-gray: #8C8880;
+          --warm-gray: #6B6760;
           --accent: #C8593A;
           --border: #DDD9D3;
         }
@@ -28,7 +27,7 @@ export default function Home() {
         body {
           background: var(--cream);
           color: var(--ink);
-          font-family: 'DM Mono', monospace;
+          font-family: var(--font-dm-mono), monospace;
           overflow-x: hidden;
         }
 
@@ -123,7 +122,7 @@ export default function Home() {
         }
 
         .hero-name {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: var(--font-cormorant), serif;
           font-size: clamp(72px, 9vw, 128px);
           font-weight: 300;
           line-height: 0.92;

@@ -29,7 +29,7 @@ function GalleryMedia({ item }: { item: any }) {
       justifyContent: "center",
     }}>
       <span style={{
-        fontFamily: "'Cormorant Garamond', serif",
+        fontFamily: "var(--font-cormorant), serif",
         fontSize: "12px",
         letterSpacing: "0.14em",
         textTransform: "uppercase" as const,
@@ -55,7 +55,7 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
       <>
         <Nav />
         <main style={{ paddingTop: "89px", minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "24px", color: "#8C8880" }}>Project not found.</p>
+          <p style={{ fontFamily: "var(--font-cormorant), serif", fontSize: "24px", color: "#6B6760" }}>Project not found.</p>
         </main>
       </>
     );
@@ -66,12 +66,11 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap');
 
         :root {
           --cream: #F5F2ED;
           --ink: #1A1814;
-          --warm-gray: #8C8880;
+          --warm-gray: #6B6760;
           --accent: #C8593A;
           --border: #DDD9D3;
         }
@@ -81,7 +80,7 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
         body {
           background: var(--cream);
           color: var(--ink);
-          font-family: 'DM Mono', monospace;
+          font-family: var(--font-dm-mono), monospace;
           overflow-x: hidden;
         }
 
@@ -144,7 +143,7 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
         }
 
         .project-title {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: var(--font-cormorant), serif;
           font-size: clamp(48px, 7vw, 96px);
           font-weight: 300;
           line-height: 0.92;
@@ -180,7 +179,7 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
         }
 
         .overview-text {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: var(--font-cormorant), serif;
           font-size: 24px;
           font-weight: 300;
           line-height: 1.65;
@@ -218,7 +217,7 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
         }
 
         .sidebar-list li {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: var(--font-cormorant), serif;
           font-size: 18px;
           font-weight: 300;
           color: var(--ink);
@@ -309,7 +308,7 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
         }
 
         .project-nav-title {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: var(--font-cormorant), serif;
           font-size: 32px;
           font-weight: 300;
           line-height: 1.1;
@@ -353,7 +352,7 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
         }
 
         .footer-tagline {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: var(--font-cormorant), serif;
           font-size: 13px;
           font-style: italic;
           color: var(--warm-gray);
