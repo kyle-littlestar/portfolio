@@ -460,9 +460,9 @@ export default function ProjectsPage() {
               </div>
               <div className="featured-bottom">
                 <span className="featured-year">{featuredProject.year}</span>
-                <button className="view-btn">
+                <a href={`/projects/${featuredProject.slug}`} className="view-btn">
                   View Project <span className="view-btn-arrow">→</span>
-                </button>
+                </a>
               </div>
             </div>
           </div>
