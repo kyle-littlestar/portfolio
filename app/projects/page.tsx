@@ -2,79 +2,7 @@
 
 import { useState } from "react";
 import { Nav } from "@/components/Nav";
-
-const projects = [
-  {
-    id: 1,
-    title: "Aether Brand System",
-    discipline: "Graphic Design",
-    description: "A comprehensive identity system for a luxury wellness brand — logotype, color, typography, and motion guidelines woven into a single cohesive language.",
-    year: "2024",
-    mediaType: "video",
-    mediaSrc: "https://www.w3schools.com/html/mov_bbb.mp4",
-    featured: true,
-  },
-  {
-    id: 2,
-    title: "Flux UI Design System",
-    discipline: "UI/UX Design",
-    description: "End-to-end design system for a fintech product — components, tokens, and interaction patterns built for scale.",
-    year: "2024",
-    mediaType: "color",
-    mediaColor: "#1A1814",
-    featured: false,
-  },
-  {
-    id: 3,
-    title: "Solstice Title Sequence",
-    discipline: "Motion Design",
-    description: "Opening titles for an independent documentary — hand-lettered type animated through film grain and light leaks.",
-    year: "2023",
-    mediaType: "video",
-    mediaSrc: "https://www.w3schools.com/html/movie.mp4",
-    featured: false,
-  },
-  {
-    id: 4,
-    title: "Golden Hour",
-    discipline: "Photography",
-    description: "A series of landscape photographs shot across the American Southwest — exploring scale, solitude, and the quality of late light.",
-    year: "2023",
-    mediaType: "color",
-    mediaColor: "#C8593A",
-    featured: false,
-  },
-  {
-    id: 5,
-    title: "Meridian App",
-    discipline: "UI/UX Design",
-    description: "Travel companion app — research, wireframes, and high-fidelity prototype for iOS. Focused on reducing friction in spontaneous travel planning.",
-    year: "2023",
-    mediaType: "color",
-    mediaColor: "#3A5A8C",
-    featured: false,
-  },
-  {
-    id: 6,
-    title: "Concrete & Type",
-    discipline: "Graphic Design",
-    description: "Editorial poster series exploring the relationship between brutalist architecture and experimental typography.",
-    year: "2022",
-    mediaType: "color",
-    mediaColor: "#6B6560",
-    featured: false,
-  },
-  {
-    id: 7,
-    title: "Drift Motion Reel",
-    discipline: "Motion Design",
-    description: "Annual showreel — a curated edit of motion work spanning brand films, kinetic typography, and 3D explorations.",
-    year: "2022",
-    mediaType: "video",
-    mediaSrc: "https://www.w3schools.com/html/mov_bbb.mp4",
-    featured: false,
-  },
-];
+import { projects } from "@/lib/projects-data";
 
 const disciplines = ["All", "Graphic Design", "UI/UX Design", "Motion Design", "Photography"];
 
@@ -547,6 +475,7 @@ export default function ProjectsPage() {
           </p>
           <div className="project-grid">
             {gridProjects.length > 0 ? gridProjects.map(project => (
+              <a href={`/projects/${project.slug}`} style={{ textDecoration: "non"}}>
               <div
                 key={project.id}
                 className="project-card"
@@ -564,6 +493,7 @@ export default function ProjectsPage() {
                   <p className="project-card-description">{project.description}</p>
                 </div>
               </div>
+              </a>
             )) : (
               <div className="empty-state">No projects in this discipline yet.</div>
             )}
