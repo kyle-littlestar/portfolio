@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-export function Nav({ activePage }: { activePage?: "home" | "projects" | "contact" }) {
+export function Nav({ activePage }: { activePage?: "home" | "projects" | "contact" | "blog" }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -183,6 +183,7 @@ export function Nav({ activePage }: { activePage?: "home" | "projects" | "contac
           <li><a href="/" className={activePage === "home" ? "active" : ""}>About</a></li>
           <li><a href="/projects" className={activePage === "projects" ? "active" : ""}>Work</a></li>
           <li><a href="/contact" className={activePage === "contact" ? "active" : ""}>Contact</a></li>
+          <li><a href="/blog" className={activePage === "blog" ? "active" : ""}>Journal</a></li>
         </ul>
 
         {/* Hamburger button */}
