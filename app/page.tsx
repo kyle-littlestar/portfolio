@@ -1,7 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import { Nav } from "@/components/Nav";
+import { Footer } from "@/components/Footer";
+import { projects } from "@/lib/projects-data";
+
+const DISCIPLINES = ["Graphic Design", "Motion Design", "UI / UX", "Photography"];
+
+const featuredProjects = projects.filter((p) => p.featured || p.status === "in-progress").slice(0, 3);
 
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
@@ -13,138 +20,57 @@ export default function Home() {
   return (
     <>
       <style>{`
+        main { padding-top: 76px; }
 
-        :root {
-          --cream: #F5F2ED;
-          --ink: #1A1814;
-          --warm-gray: #6B6760;
-          --accent: #C8593A;
-          --border: #DDD9D3;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-          background: var(--cream);
-          color: var(--ink);
-          font-family: var(--font-dm-mono), monospace;
-          overflow-x: hidden;
-        }
-
-        body::before {
-          content: '';
-          position: fixed;
-          inset: 0;
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-          pointer-events: none;
-          z-index: 100;
-          opacity: 0.5;
-        }
-
-        .fade-up {
-          opacity: 0;
-          transform: translateY(24px);
-          transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .loaded .fade-up { opacity: 1; transform: translateY(0); }
-        .delay-1 { transition-delay: 0.1s; }
-        .delay-2 { transition-delay: 0.25s; }
-        .delay-3 { transition-delay: 0.4s; }
-        .delay-4 { transition-delay: 0.55s; }
-        .delay-5 { transition-delay: 0.7s; }
-        .delay-6 { transition-delay: 0.85s; }
-
-        nav {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          z-index: 50;
-          padding: 28px 48px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          background: var(--cream);
-          border-bottom: 1px solid var(--border);
-        }
-
-        .nav-logo {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 18px;
-          font-weight: 600;
-          letter-spacing: 0.02em;
-          color: var(--ink);
-          text-decoration: none;
-        }
-
-        .nav-links {
-          display: flex;
-          gap: 40px;
-          list-style: none;
-        }
-
-        .nav-links a {
-          font-size: 11px;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          color: var(--warm-gray);
-          text-decoration: none;
-          transition: color 0.2s;
-        }
-
-        .nav-links a:hover { color: var(--ink); }
-
-        main { padding-top: 89px; }
-
-        /* HERO */
+        /* ── HERO ── */
         .hero {
-          min-height: calc(100vh - 89px);
+          min-height: calc(100vh - 62px);
           display: grid;
-          grid-template-columns: 1fr 420px;
-          gap: 0;
-          border-bottom: 1px solid var(--border);
+          grid-template-columns: 1fr 1fr;
+          border-bottom: var(--border-w) solid var(--border);
         }
 
         .hero-left {
-          padding: 80px 48px 80px 48px;
+          padding: 80px 48px;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          border-right: 1px solid var(--border);
+          border-right: var(--border-w) solid var(--border);
         }
 
-        .hero-eyebrow {
+        .hero-label {
+          font-family: var(--font-body);
           font-size: 11px;
+          font-weight: 500;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: var(--warm-gray);
+          color: var(--text-muted);
         }
 
         .hero-name {
-          font-family: var(--font-cormorant), serif;
-          font-size: clamp(72px, 9vw, 128px);
-          font-weight: 300;
-          line-height: 0.92;
-          letter-spacing: -0.02em;
-          color: var(--ink);
+          font-family: var(--font-display);
+          font-size: clamp(56px, 8vw, 120px);
+          font-weight: 800;
+          line-height: 0.88;
+          letter-spacing: -0.03em;
+          text-transform: uppercase;
+          color: var(--text-primary);
           margin-top: 24px;
         }
 
-        .hero-name em {
-          font-style: italic;
+        .hero-name .accent {
           color: var(--accent);
+          display: block;
         }
 
         .hero-tagline {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 22px;
-          font-weight: 300;
-          font-style: italic;
-          color: var(--warm-gray);
-          line-height: 1.5;
+          font-family: var(--font-body);
+          font-size: 15px;
+          font-weight: 400;
+          color: var(--text-secondary);
+          line-height: 1.7;
           max-width: 480px;
-          margin-top: 40px;
+          margin-top: 32px;
         }
 
         .hero-bottom {
@@ -157,32 +83,34 @@ export default function Home() {
         .hero-disciplines {
           display: flex;
           flex-direction: column;
-          gap: 6px;
+          gap: 8px;
         }
 
         .discipline-item {
           display: flex;
           align-items: center;
           gap: 12px;
+          font-family: var(--font-body);
           font-size: 11px;
-          letter-spacing: 0.1em;
+          font-weight: 500;
+          letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: var(--warm-gray);
+          color: var(--text-muted);
         }
 
         .discipline-dot {
-          width: 4px;
-          height: 4px;
-          border-radius: 50%;
+          width: 6px;
+          height: 6px;
           background: var(--accent);
           flex-shrink: 0;
         }
 
         .scroll-hint {
+          font-family: var(--font-body);
           font-size: 10px;
-          letter-spacing: 0.14em;
+          letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: var(--warm-gray);
+          color: var(--text-muted);
           writing-mode: vertical-rl;
           display: flex;
           align-items: center;
@@ -192,25 +120,18 @@ export default function Home() {
         .scroll-hint::before {
           content: '';
           display: block;
-          width: 1px;
+          width: 2px;
           height: 48px;
-          background: var(--border);
+          background: var(--border-strong);
         }
 
         .hero-right {
           position: relative;
           overflow: hidden;
+          background: var(--bg-surface);
         }
 
-        .headshot-container {
-          width: 100%;
-          height: 100%;
-          background: var(--ink);
-          position: relative;
-          overflow: hidden;
-        }
-
-        .headshot-placeholder {
+        .hero-photo-placeholder {
           width: 100%;
           height: 100%;
           display: flex;
@@ -218,82 +139,81 @@ export default function Home() {
           align-items: center;
           justify-content: center;
           gap: 16px;
-          background: linear-gradient(160deg, #2a2620 0%, #1A1814 100%);
+          background: linear-gradient(160deg, var(--bg-elevated) 0%, var(--bg) 100%);
         }
 
-        .headshot-placeholder-icon {
+        .hero-photo-icon {
           width: 80px;
           height: 80px;
-          border-radius: 50%;
-          border: 1px solid rgba(255,255,255,0.15);
+          border: var(--border-w-thick) solid var(--border-strong);
           display: flex;
           align-items: center;
           justify-content: center;
         }
 
-        .headshot-placeholder svg {
-          opacity: 0.25;
-        }
+        .hero-photo-icon svg { opacity: 0.3; }
 
-        .headshot-label {
+        .hero-photo-label {
+          font-family: var(--font-body);
           font-size: 10px;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: rgba(255,255,255,0.2);
+          color: var(--text-muted);
         }
 
-        .headshot-overlay {
+        .hero-photo-overlay {
           position: absolute;
           bottom: 0;
           left: 0;
           right: 0;
           padding: 32px;
-          background: linear-gradient(to top, rgba(26,24,20,0.8) 0%, transparent 100%);
+          background: linear-gradient(to top, rgba(12,10,9,0.9) 0%, transparent 100%);
         }
 
-        .headshot-overlay-text {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 13px;
-          font-style: italic;
-          color: rgba(255,255,255,0.5);
+        .hero-photo-overlay-text {
+          font-family: var(--font-body);
+          font-size: 12px;
+          color: var(--text-muted);
           letter-spacing: 0.04em;
         }
 
-        /* ABOUT */
+        /* ── ABOUT ── */
         .about {
           display: grid;
-          grid-template-columns: 240px 1fr;
-          border-bottom: 1px solid var(--border);
+          grid-template-columns: 200px 1fr;
+          border-bottom: var(--border-w) solid var(--border);
         }
 
-        .section-label {
-          padding: 64px 48px;
-          border-right: 1px solid var(--border);
+        .section-sidebar {
+          padding: 64px 32px;
+          border-right: var(--border-w) solid var(--border);
           display: flex;
           flex-direction: column;
           justify-content: space-between;
         }
 
         .section-number {
+          font-family: var(--font-body);
           font-size: 10px;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: var(--warm-gray);
+          color: var(--text-muted);
         }
 
-        .section-title {
-          font-family: 'Cormorant Garamond', serif;
+        .section-title-vertical {
+          font-family: var(--font-display);
           font-size: 48px;
-          font-weight: 300;
-          line-height: 1;
-          color: var(--ink);
+          font-weight: 800;
+          text-transform: uppercase;
+          letter-spacing: -0.02em;
+          color: var(--text-muted);
           writing-mode: vertical-rl;
           transform: rotate(180deg);
           align-self: flex-end;
         }
 
         .about-content {
-          padding: 64px 80px 64px 64px;
+          padding: 64px;
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 64px;
@@ -301,186 +221,268 @@ export default function Home() {
         }
 
         .about-text {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 28px;
-          font-weight: 300;
-          line-height: 1.5;
-          color: var(--ink);
+          font-family: var(--font-display);
+          font-size: 26px;
+          font-weight: 500;
+          line-height: 1.4;
+          color: var(--text-primary);
         }
 
-        .about-text em {
-          font-style: italic;
-          color: var(--accent);
-        }
+        .about-text .accent { color: var(--accent); }
 
         .about-details {
           display: flex;
           flex-direction: column;
           gap: 32px;
-          padding-top: 8px;
+          padding-top: 4px;
         }
 
         .about-detail-item {
-          border-top: 1px solid var(--border);
-          padding-top: 20px;
+          border-top: var(--border-w) solid var(--border);
+          padding-top: 16px;
         }
 
         .about-detail-label {
+          font-family: var(--font-body);
           font-size: 10px;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: var(--warm-gray);
+          color: var(--text-muted);
           margin-bottom: 8px;
         }
 
         .about-detail-value {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 18px;
-          font-weight: 400;
-          color: var(--ink);
-          line-height: 1.4;
+          font-family: var(--font-display);
+          font-size: 16px;
+          font-weight: 500;
+          color: var(--text-secondary);
+          line-height: 1.5;
         }
 
-        /* CONTACT */
-        .contact {
-          display: grid;
-          grid-template-columns: 240px 1fr;
+        /* ── FEATURED WORK ── */
+        .featured-work {
+          border-bottom: var(--border-w) solid var(--border);
         }
 
-        .contact-content {
-          padding: 64px;
+        .featured-header {
+          padding: 48px 48px 32px;
           display: flex;
-          flex-direction: column;
-          gap: 48px;
-        }
-
-        .contact-heading {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: clamp(48px, 6vw, 80px);
-          font-weight: 300;
-          line-height: 1;
-          color: var(--ink);
-        }
-
-        .contact-heading em {
-          font-style: italic;
-          color: var(--accent);
-        }
-
-        .contact-links {
-          display: flex;
-          flex-direction: column;
-          gap: 0;
-        }
-
-        .contact-link {
-          display: flex;
-          align-items: center;
+          align-items: flex-end;
           justify-content: space-between;
-          padding: 24px 0;
-          border-top: 1px solid var(--border);
-          text-decoration: none;
-          color: var(--ink);
-          transition: all 0.2s;
-          group: true;
         }
 
-        .contact-link:last-child {
-          border-bottom: 1px solid var(--border);
+        .featured-title {
+          font-family: var(--font-display);
+          font-size: clamp(36px, 5vw, 56px);
+          font-weight: 800;
+          text-transform: uppercase;
+          letter-spacing: -0.02em;
+          line-height: 0.95;
         }
 
-        .contact-link:hover .contact-link-label {
-          color: var(--accent);
-        }
+        .featured-title .accent { color: var(--accent); }
 
-        .contact-link:hover .contact-link-arrow {
-          transform: translateX(6px);
-          color: var(--accent);
-        }
-
-        .contact-link-left {
+        .view-all-link {
+          font-family: var(--font-body);
+          font-size: 11px;
+          font-weight: 500;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: var(--text-muted);
           display: flex;
           align-items: center;
-          gap: 20px;
-        }
-
-        .contact-link-num {
-          font-size: 10px;
-          letter-spacing: 0.14em;
-          color: var(--warm-gray);
-          width: 20px;
-        }
-
-        .contact-link-label {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 32px;
-          font-weight: 300;
+          gap: 8px;
+          padding-bottom: 8px;
           transition: color 0.2s;
         }
 
-        .contact-link-arrow {
-          font-size: 20px;
-          color: var(--warm-gray);
+        .view-all-link:hover { color: var(--accent-hover); }
+        .view-all-link .arrow { transition: transform 0.2s; }
+        .view-all-link:hover .arrow { transform: translateX(4px); }
+
+        .featured-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          border-top: var(--border-w) solid var(--border);
+        }
+
+        .featured-card {
+          border-right: var(--border-w) solid var(--border);
+          text-decoration: none;
+          transition: background 0.2s;
+        }
+
+        .featured-card:last-child { border-right: none; }
+        .featured-card:hover { background: var(--bg-surface); }
+
+        .featured-card-media {
+          height: 280px;
+          overflow: hidden;
+          position: relative;
+          border-bottom: var(--border-w) solid var(--border);
+        }
+
+        .featured-card-color {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .featured-card-color span {
+          font-family: var(--font-body);
+          font-size: 10px;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: rgba(255,255,255,0.15);
+        }
+
+        .featured-card-status {
+          position: absolute;
+          top: 12px;
+          left: 12px;
+          font-family: var(--font-body);
+          font-size: 10px;
+          font-weight: 600;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          padding: 4px 10px;
+          border: var(--border-w) solid;
+        }
+
+        .status-completed {
+          color: var(--success);
+          border-color: var(--success);
+          background: rgba(74, 122, 74, 0.15);
+        }
+
+        .status-in-progress {
+          color: var(--warning);
+          border-color: var(--warning);
+          background: rgba(196, 154, 60, 0.15);
+        }
+
+        .featured-card-info { padding: 24px; }
+
+        .featured-card-discipline {
+          font-family: var(--font-body);
+          font-size: 10px;
+          font-weight: 600;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: var(--accent);
+          margin-bottom: 8px;
+        }
+
+        .featured-card-name {
+          font-family: var(--font-display);
+          font-size: 22px;
+          font-weight: 700;
+          color: var(--text-primary);
+          margin-bottom: 8px;
+          line-height: 1.1;
+        }
+
+        .featured-card-desc {
+          font-family: var(--font-body);
+          font-size: 13px;
+          line-height: 1.6;
+          color: var(--text-muted);
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+
+        /* ── CONTACT CTA ── */
+        .contact-cta {
+          padding: 96px 48px;
+          text-align: center;
+          border-bottom: var(--border-w) solid var(--border);
+        }
+
+        .contact-cta-heading {
+          font-family: var(--font-display);
+          font-size: clamp(40px, 6vw, 72px);
+          font-weight: 800;
+          text-transform: uppercase;
+          letter-spacing: -0.02em;
+          line-height: 0.95;
+          color: var(--text-primary);
+          margin-bottom: 24px;
+        }
+
+        .contact-cta-heading .accent { color: var(--accent); }
+
+        .contact-cta-sub {
+          font-family: var(--font-body);
+          font-size: 14px;
+          color: var(--text-muted);
+          margin-bottom: 40px;
+        }
+
+        .cta-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 12px;
+          font-family: var(--font-body);
+          font-size: 12px;
+          font-weight: 600;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: var(--text-primary);
+          background: var(--accent-bg);
+          border: var(--border-w-thick) solid var(--accent-bg);
+          padding: 16px 40px;
+          text-decoration: none;
           transition: all 0.2s;
         }
 
-        .footer {
-          padding: 32px 48px;
-          border-top: 1px solid var(--border);
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
+        .cta-btn:hover {
+          background: var(--accent-bg-hover);
+          border-color: var(--accent-bg-hover);
+          border-color: var(--accent-hover);
         }
 
-        .footer-copy {
-          font-size: 11px;
-          letter-spacing: 0.08em;
-          color: var(--warm-gray);
-        }
+        .cta-btn .arrow { transition: transform 0.2s; }
+        .cta-btn:hover .arrow { transform: translateX(4px); }
 
-        .footer-tagline {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 13px;
-          font-style: italic;
-          color: var(--warm-gray);
-        }
-
+        /* ── RESPONSIVE ── */
         @media (max-width: 900px) {
-          nav { padding: 20px 24px; }
           .hero { grid-template-columns: 1fr; }
-          .hero-left { padding: 48px 24px; }
-          .hero-right { height: 400px; }
+          .hero-left { padding: 48px 20px; }
+          .hero-right { height: 360px; }
           .about { grid-template-columns: 1fr; }
-          .section-label { display: none; }
-          .about-content { grid-template-columns: 1fr; padding: 48px 24px; gap: 40px; }
-          .contact { grid-template-columns: 1fr; }
-          .contact-content { padding: 48px 24px; }
-          .footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
+          .section-sidebar { display: none; }
+          .about-content { grid-template-columns: 1fr; padding: 48px 20px; gap: 40px; }
+          .featured-header { padding: 40px 20px 24px; flex-direction: column; align-items: flex-start; gap: 16px; }
+          .featured-grid { grid-template-columns: 1fr; }
+          .featured-card { border-right: none; border-bottom: var(--border-w) solid var(--border); }
+          .featured-card:last-child { border-bottom: none; }
+          .contact-cta { padding: 64px 20px; }
         }
       `}</style>
 
+      <Nav activePage="home" />
 
       <div className={loaded ? "loaded" : ""}>
-        {/* NAV */}
-
-// Then inside your JSX, replace <nav>...</nav> with:
-<Nav activePage="home" />
-
         <main>
           {/* HERO */}
           <section className="hero">
             <div className="hero-left">
               <div>
+                <p className="hero-label fade-up delay-1">Creative Designer &amp; Builder</p>
                 <h1 className="hero-name fade-up delay-2">
-                  Kyle<br /><em>Littlestar</em>
+                  Kyle<span className="accent">Littlestar</span>
                 </h1>
                 <p className="hero-tagline fade-up delay-3">
-                  A multi-disciplinary creative bridging graphic design, motion, and UI/UX — crafting work that moves people.
+                  Multi-disciplinary creative bridging graphic design, motion, UI/UX, and code — crafting work that moves people.
                 </p>
               </div>
               <div className="hero-bottom fade-up delay-4">
                 <div className="hero-disciplines">
-                  {["Graphic Design", "Motion Design", "UI / UX Design", "Photography"].map((d) => (
+                  {DISCIPLINES.map((d) => (
                     <div key={d} className="discipline-item">
                       <span className="discipline-dot" />
                       {d}
@@ -491,83 +493,92 @@ export default function Home() {
               </div>
             </div>
             <div className="hero-right fade-up delay-5">
-              <div className="headshot-container">
-                <div className="headshot-placeholder">
-                  <div className="headshot-placeholder-icon">
-                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1">
-                      <circle cx="12" cy="8" r="4"/>
-                      <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-                    </svg>
-                  </div>
-                  <span className="headshot-label">Your photo here</span>
+              <div className="hero-photo-placeholder">
+                <div className="hero-photo-icon">
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5">
+                    <circle cx="12" cy="8" r="4" />
+                    <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+                  </svg>
                 </div>
-                <div className="headshot-overlay">
-                  <p className="headshot-overlay-text">Based wherever the work takes me</p>
-                </div>
+                <span className="hero-photo-label">Your photo here</span>
+              </div>
+              <div className="hero-photo-overlay">
+                <p className="hero-photo-overlay-text">Based wherever the work takes me</p>
               </div>
             </div>
           </section>
 
           {/* ABOUT */}
           <section className="about" id="about">
-            <div className="section-label">
+            <div className="section-sidebar">
               <span className="section-number">01</span>
-              <span className="section-title">About</span>
+              <span className="section-title-vertical">About</span>
             </div>
             <div className="about-content">
               <p className="about-text fade-up">
-                I'm a creative with a <em>restless curiosity</em> — equally at home shaping a brand identity, directing motion, refining a user experience, or chasing light with a camera.
+                I&apos;m a creative with a <span className="accent">restless curiosity</span> — equally at home shaping a brand identity, directing motion, refining a user experience, or building it from scratch in code.
               </p>
               <div className="about-details fade-up delay-2">
                 <div className="about-detail-item">
                   <p className="about-detail-label">Disciplines</p>
-                  <p className="about-detail-value">Graphic Design · Motion Design<br />UI/UX · Photography</p>
+                  <p className="about-detail-value">Graphic Design &middot; Motion Design<br />UI/UX &middot; Photography</p>
                 </div>
                 <div className="about-detail-item">
                   <p className="about-detail-label">Interests</p>
-                  <p className="about-detail-value">Typography · Adventure<br />Visual Storytelling</p>
+                  <p className="about-detail-value">Typography &middot; Adventure<br />Visual Storytelling</p>
                 </div>
                 <div className="about-detail-item">
                   <p className="about-detail-label">Available for</p>
-                  <p className="about-detail-value">Freelance · Collaboration<br />Full-time Opportunities</p>
+                  <p className="about-detail-value">Freelance &middot; Collaboration<br />Full-time Opportunities</p>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* CONTACT */}
-          <section className="contact" id="contact">
-            <div className="section-label">
-              <span className="section-number">02</span>
-              <span className="section-title">Contact</span>
-            </div>
-            <div className="contact-content">
-              <h2 className="contact-heading fade-up">
-                Let's make<br />something <em>great.</em>
+          {/* FEATURED WORK */}
+          <section className="featured-work">
+            <div className="featured-header">
+              <h2 className="featured-title fade-up">
+                Selected<br /><span className="accent">Work</span>
               </h2>
-              <div className="contact-links fade-up delay-2">
-                {[
-                  { label: "Email", href: "mailto:hello@kylelittlestar.com" },
-                  { label: "Instagram", href: "https://www.instagram.com/star.slain/" },
-                  { label: "LinkedIn", href: "#" }
-                ].map((link, i) => (
-                  <a key={link.label} href={link.href} className="contact-link">
-                    <div className="contact-link-left">
-                      <span className="contact-link-num">0{i + 1}</span>
-                      <span className="contact-link-label">{link.label}</span>
-                    </div>
-                    <span className="contact-link-arrow">→</span>
-                  </a>
-                ))}
-              </div>
+              <Link href="/projects" className="view-all-link fade-up delay-2">
+                View All <span className="arrow">&rarr;</span>
+              </Link>
             </div>
+            <div className="featured-grid">
+              {featuredProjects.map((project) => (
+                <Link key={project.id} href={`/projects/${project.slug}`} className="featured-card fade-up delay-3">
+                  <div className="featured-card-media">
+                    <div className="featured-card-color" style={{ background: project.mediaColor || "#1A1714" }}>
+                      <span>Preview</span>
+                    </div>
+                    <span className={`featured-card-status ${project.status === "completed" ? "status-completed" : "status-in-progress"}`}>
+                      {project.status === "completed" ? "Completed" : "In Progress"}
+                    </span>
+                  </div>
+                  <div className="featured-card-info">
+                    <p className="featured-card-discipline">{project.discipline}</p>
+                    <h3 className="featured-card-name">{project.title}</h3>
+                    <p className="featured-card-desc">{project.description}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          {/* CONTACT CTA */}
+          <section className="contact-cta" id="contact">
+            <h2 className="contact-cta-heading fade-up">
+              Let&apos;s Build<br />Something <span className="accent">Great</span>
+            </h2>
+            <p className="contact-cta-sub fade-up delay-2">Have a project in mind? I&apos;d love to hear about it.</p>
+            <Link href="/contact" className="cta-btn fade-up delay-3">
+              Get in Touch <span className="arrow">&rarr;</span>
+            </Link>
           </section>
         </main>
 
-        <footer className="footer">
-          <span className="footer-copy">© 2026 Kyle Littlestar. All rights reserved.</span>
-          <span className="footer-tagline">Type enthusiast & adventurist</span>
-        </footer>
+        <Footer />
       </div>
     </>
   );

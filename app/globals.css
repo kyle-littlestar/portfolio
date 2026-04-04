@@ -1,26 +1,138 @@
 @import "tailwindcss";
 
+/* ============================================
+   DESIGN SYSTEM — Wabi Sabi x Dark Academia x Neo-Brutalism
+   ============================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* --- Core Palette --- */
+  --bg:          #0C0A09;
+  --bg-surface:  #1A1714;
+  --bg-elevated: #221F1B;
+  --bg-hover:    #2A2522;
+
+  /* --- Text --- */
+  --text-primary:   #E8E0D6;
+  --text-secondary: #9B9489;
+  --text-muted:     #918A85;
+
+  /* --- Accent (Dark Crimson) --- */
+  --accent:         #D44A4A;
+  --accent-hover:   #E85050;
+  --accent-bg:      #A83838;
+  --accent-bg-hover:#BF4242;
+
+  /* --- Borders --- */
+  --border:         #2A2522;
+  --border-strong:  #3D3632;
+
+  /* --- Functional --- */
+  --success:  #4A7A4A;
+  --warning:  #C49A3C;
+  --error:    #C62828;
+
+  /* --- Typography --- */
+  --font-display: var(--font-space-grotesk), 'Space Grotesk', system-ui, sans-serif;
+  --font-body:    var(--font-jetbrains-mono), 'JetBrains Mono', monospace;
+
+  /* --- Border widths (Neo-Brutalism) --- */
+  --border-w:       2px;
+  --border-w-thick: 3px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--bg);
+  --color-foreground: var(--text-primary);
+  --font-sans: var(--font-display);
+  --font-mono: var(--font-body);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ============================================
+   BASE RESET
+   ============================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: hidden;
 }
+
+/* ============================================
+   GRAIN / NOISE TEXTURE (Wabi Sabi)
+   ============================================ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.4;
+}
+
+/* ============================================
+   LINKS & SELECTION
+   ============================================ */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: var(--accent-bg);
+  color: var(--text-primary);
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.loaded .fade-up {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.2s; }
+.delay-3 { transition-delay: 0.35s; }
+.delay-4 { transition-delay: 0.5s; }
+.delay-5 { transition-delay: 0.65s; }
+.delay-6 { transition-delay: 0.8s; }

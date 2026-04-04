@@ -1,6 +1,8 @@
 import { getAllPosts, getPostBySlug } from "@/lib/blog";
 import { Nav } from "@/components/Nav";
+import { Footer } from "@/components/Footer";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import Link from "next/link";
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
@@ -21,10 +23,10 @@ const components = {
     <video
       src={src}
       controls
-      style={{ width: "100%", borderRadius: "2px", margin: "32px 0" }}
+      style={{ width: "100%", margin: "32px 0", border: "2px solid var(--border)" }}
     />
   ),
-  img: (props: any) => (
+  img: (props: React.ImgHTMLAttributes<HTMLImageElement>) => (
     <img
       {...props}
       style={{ width: "100%", height: "auto", margin: "32px 0", display: "block" }}
@@ -43,9 +45,9 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   if (!post) {
     return (
       <>
-        <Nav activePage="blog" />
-        <main style={{ paddingTop: "89px", minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <p style={{ fontFamily: "serif", fontSize: "24px", color: "#8C8880" }}>Post not found.</p>
+        <Nav activePage="journal" />
+        <main style={{ paddingTop: "62px", minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <p style={{ fontFamily: "var(--font-display)", fontSize: "24px", color: "var(--text-muted)" }}>Post not found.</p>
         </main>
       </>
     );
@@ -54,53 +56,38 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   return (
     <>
       <style>{`
-        :root {
-          --cream: #F5F2ED;
-          --ink: #1A1814;
-          --warm-gray: #6B6760;
-          --accent: #C8593A;
-          --border: #DDD9D3;
+        main { padding-top: 76px; }
+
+        .back-bar {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 32px 48px;
+          border-bottom: var(--border-w) solid var(--border);
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-          background: var(--cream);
-          color: var(--ink);
-          font-family: var(--font-dm-mono), monospace;
-          overflow-x: hidden;
-        }
-
-        body::before {
-          content: '';
-          position: fixed;
-          inset: 0;
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-          pointer-events: none;
-          z-index: 100;
-          opacity: 0.5;
-        }
-
-        main { padding-top: 89px; }
 
         .back-link {
           display: inline-flex;
           align-items: center;
-          gap: 10px;
+          gap: 8px;
+          font-family: var(--font-body);
           font-size: 11px;
+          font-weight: 500;
           letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: var(--warm-gray);
+          color: var(--text-primary);
           text-decoration: none;
-          padding: 24px 48px;
-          border-bottom: 1px solid var(--border);
-          transition: color 0.2s;
-          width: 100%;
+          padding: 10px 28px;
+          background: var(--accent-bg);
+          border: var(--border-w) solid var(--accent-bg);
+          transition: all 0.2s;
         }
 
-        .back-link:hover { color: var(--ink); }
+        .back-link:hover {
+          background: var(--accent-bg-hover);
+          border-color: var(--accent-bg-hover);
+        }
 
-        /* POST HEADER */
         .post-header {
           padding: 64px 48px 0;
           max-width: 800px;
@@ -108,7 +95,9 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         }
 
         .post-category {
+          font-family: var(--font-body);
           font-size: 10px;
+          font-weight: 600;
           letter-spacing: 0.18em;
           text-transform: uppercase;
           color: var(--accent);
@@ -116,12 +105,13 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         }
 
         .post-title {
-          font-family: var(--font-cormorant), serif;
-          font-size: clamp(40px, 6vw, 72px);
-          font-weight: 300;
-          line-height: 1.05;
+          font-family: var(--font-display);
+          font-size: clamp(36px, 5vw, 56px);
+          font-weight: 800;
+          line-height: 1;
           letter-spacing: -0.02em;
-          color: var(--ink);
+          text-transform: uppercase;
+          color: var(--text-primary);
           margin-bottom: 24px;
         }
 
@@ -130,22 +120,16 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
           align-items: center;
           gap: 24px;
           padding-bottom: 48px;
-          border-bottom: 1px solid var(--border);
+          border-bottom: var(--border-w) solid var(--border);
         }
 
-        .post-date {
+        .post-date, .post-reading-time {
+          font-family: var(--font-body);
           font-size: 11px;
           letter-spacing: 0.1em;
-          color: var(--warm-gray);
+          color: var(--text-muted);
         }
 
-        .post-reading-time {
-          font-size: 11px;
-          letter-spacing: 0.1em;
-          color: var(--warm-gray);
-        }
-
-        /* COVER IMAGE */
         .post-cover {
           width: 100%;
           max-width: 800px;
@@ -157,15 +141,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
           width: 100%;
           height: auto;
           display: block;
-        }
-
-        .post-cover-placeholder {
-          width: 100%;
-          height: 400px;
-          background: var(--ink);
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          border: var(--border-w) solid var(--border);
         }
 
         /* MDX CONTENT */
@@ -176,46 +152,38 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         }
 
         .post-body p {
-          font-family: var(--font-cormorant), serif;
-          font-size: 22px;
-          font-weight: 300;
-          line-height: 1.7;
-          color: var(--ink);
-          margin-bottom: 28px;
+          font-family: var(--font-body);
+          font-size: 15px;
+          line-height: 1.5;
+          color: var(--text-secondary);
+          margin-bottom: 24px;
         }
 
         .post-body h2 {
-          font-family: var(--font-cormorant), serif;
-          font-size: 40px;
-          font-weight: 300;
-          line-height: 1.1;
-          color: var(--ink);
-          margin: 56px 0 24px;
+          font-family: var(--font-display);
+          font-size: 32px;
+          font-weight: 700;
+          text-transform: uppercase;
           letter-spacing: -0.01em;
+          color: var(--text-primary);
+          margin: 56px 0 20px;
         }
 
         .post-body h3 {
-          font-family: var(--font-cormorant), serif;
-          font-size: 28px;
-          font-weight: 400;
-          line-height: 1.2;
-          color: var(--ink);
+          font-family: var(--font-display);
+          font-size: 22px;
+          font-weight: 600;
+          color: var(--text-primary);
           margin: 40px 0 16px;
         }
 
-        .post-body em {
-          font-style: italic;
-          color: var(--accent);
-        }
+        .post-body strong { font-weight: 700; color: var(--text-primary); }
 
-        .post-body strong {
-          font-weight: 600;
-        }
+        .post-body em { color: var(--accent); }
 
         .post-body a {
-          color: var(--ink);
+          color: var(--text-primary);
           border-bottom: 1px solid var(--accent);
-          text-decoration: none;
           transition: color 0.2s;
         }
 
@@ -223,54 +191,48 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
         .post-body hr {
           border: none;
-          border-top: 1px solid var(--border);
+          border-top: var(--border-w) solid var(--border);
           margin: 48px 0;
         }
 
         .post-body blockquote {
-          border-left: 2px solid var(--accent);
+          border-left: var(--border-w-thick) solid var(--accent);
           padding-left: 24px;
           margin: 32px 0;
         }
 
-        .post-body blockquote p {
-          font-style: italic;
-          color: var(--warm-gray);
-        }
+        .post-body blockquote p { color: var(--text-muted); }
 
-        .post-body ul, .post-body ol {
-          margin: 0 0 28px 24px;
-        }
+        .post-body ul, .post-body ol { margin: 0 0 24px 24px; }
 
         .post-body li {
-          font-family: var(--font-cormorant), serif;
-          font-size: 22px;
-          font-weight: 300;
-          line-height: 1.7;
-          color: var(--ink);
+          font-family: var(--font-body);
+          font-size: 15px;
+          line-height: 1.8;
+          color: var(--text-secondary);
           margin-bottom: 8px;
         }
 
         .post-body code {
-          font-family: var(--font-dm-mono), monospace;
-          font-size: 14px;
-          background: var(--border);
+          font-family: var(--font-body);
+          font-size: 13px;
+          background: var(--bg-elevated);
+          border: 1px solid var(--border);
           padding: 2px 8px;
-          border-radius: 2px;
         }
 
         /* PREV / NEXT */
         .post-nav {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          border-top: 1px solid var(--border);
+          border-top: var(--border-w) solid var(--border);
         }
 
         .post-nav-item {
           padding: 48px;
           text-decoration: none;
-          color: var(--ink);
-          border-right: 1px solid var(--border);
+          color: var(--text-primary);
+          border-right: var(--border-w) solid var(--border);
           transition: background 0.2s;
           display: flex;
           flex-direction: column;
@@ -278,53 +240,41 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         }
 
         .post-nav-item:last-child { border-right: none; }
-        .post-nav-item:hover { background: #F0EDE7; }
+        .post-nav-item:hover { background: var(--bg-surface); }
         .post-nav-item.next { text-align: right; }
 
         .post-nav-label {
+          font-family: var(--font-body);
           font-size: 10px;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: var(--warm-gray);
+          color: var(--text-muted);
         }
 
         .post-nav-title {
-          font-family: var(--font-cormorant), serif;
-          font-size: 24px;
-          font-weight: 300;
+          font-family: var(--font-display);
+          font-size: 22px;
+          font-weight: 700;
           line-height: 1.2;
         }
 
-        .footer {
-          padding: 32px 48px;
-          border-top: 1px solid var(--border);
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .footer-copy { font-size: 11px; letter-spacing: 0.08em; color: var(--warm-gray); }
-        .footer-tagline { font-family: var(--font-cormorant), serif; font-size: 13px; font-style: italic; color: var(--warm-gray); }
-
         @media (max-width: 768px) {
-          .back-link { padding: 20px 24px; }
-          .post-header { padding: 40px 24px 0; }
-          .post-cover { padding: 0 24px; margin: 32px auto; }
-          .post-cover-placeholder { height: 240px; }
-          .post-body { padding: 32px 24px 64px; }
-          .post-body p, .post-body li { font-size: 20px; }
-          .post-body h2 { font-size: 32px; }
+          .back-bar { padding: 12px 20px; }
+          .post-header { padding: 40px 20px 0; }
+          .post-cover { padding: 0 20px; margin: 32px auto; }
+          .post-body { padding: 32px 20px 64px; }
           .post-nav { grid-template-columns: 1fr; }
-          .post-nav-item { padding: 32px 24px; border-right: none; border-bottom: 1px solid var(--border); }
+          .post-nav-item { padding: 32px 20px; border-right: none; border-bottom: var(--border-w) solid var(--border); }
           .post-nav-item.next { text-align: left; }
-          .footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
         }
       `}</style>
 
-      <Nav activePage="blog" />
+      <Nav activePage="journal" />
 
       <main>
-        <a href="/blog" className="back-link">← The Journal</a>
+        <div className="back-bar">
+          <Link href="/blog" className="back-link">&larr; The Journal</Link>
+        </div>
 
         <div className="post-header">
           <p className="post-category">{post.category}</p>
@@ -349,24 +299,21 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
         <div className="post-nav">
           {prev ? (
-            <a href={`/blog/${prev.slug}`} className="post-nav-item prev">
-              <span className="post-nav-label">← Previous</span>
+            <Link href={`/blog/${prev.slug}`} className="post-nav-item prev">
+              <span className="post-nav-label">&larr; Previous</span>
               <span className="post-nav-title">{prev.title}</span>
-            </a>
+            </Link>
           ) : <div />}
           {next ? (
-            <a href={`/blog/${next.slug}`} className="post-nav-item next">
-              <span className="post-nav-label">Next →</span>
+            <Link href={`/blog/${next.slug}`} className="post-nav-item next">
+              <span className="post-nav-label">Next &rarr;</span>
               <span className="post-nav-title">{next.title}</span>
-            </a>
+            </Link>
           ) : <div />}
         </div>
       </main>
 
-      <footer className="footer">
-        <span className="footer-copy">© 2024 Kyle Littlestar. All rights reserved.</span>
-        <span className="footer-tagline">Type enthusiast & adventurist</span>
-      </footer>
+      <Footer />
     </>
   );
 }

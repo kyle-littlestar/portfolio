@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Nav } from "@/components/Nav";
+import { Footer } from "@/components/Footer";
 
 const PROJECT_TYPES = [
   "Brand Identity",
@@ -66,70 +67,36 @@ export default function ContactPage() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap');
-
-        :root {
-          --cream: #F5F2ED;
-          --ink: #1A1814;
-          --warm-gray: #8C8880;
-          --accent: #C8593A;
-          --border: #DDD9D3;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-          background: var(--cream);
-          color: var(--ink);
-          font-family: 'DM Mono', monospace;
-          overflow-x: hidden;
-        }
-
-        body::before {
-          content: '';
-          position: fixed;
-          inset: 0;
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-          pointer-events: none;
-          z-index: 100;
-          opacity: 0.5;
-        }
-
-        main { padding-top: 89px; }
+        main { padding-top: 76px; }
 
         .page-header {
           padding: 64px 48px 48px;
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 48px;
-          border-bottom: 1px solid var(--border);
+          border-bottom: var(--border-w) solid var(--border);
           align-items: end;
         }
 
         .page-title {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: var(--font-display);
           font-size: clamp(48px, 7vw, 96px);
-          font-weight: 300;
+          font-weight: 800;
           line-height: 0.9;
           letter-spacing: -0.02em;
+          text-transform: uppercase;
         }
 
-        .page-title em {
-          font-style: italic;
-          color: var(--accent);
-        }
+        .page-title .accent { color: var(--accent); }
 
         .page-intro {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 22px;
-          font-weight: 300;
-          font-style: italic;
-          color: var(--warm-gray);
-          line-height: 1.6;
+          font-family: var(--font-body);
+          font-size: 15px;
+          color: var(--text-secondary);
+          line-height: 1.7;
           padding-bottom: 8px;
         }
 
-        /* FORM LAYOUT */
         .form-wrapper {
           display: grid;
           grid-template-columns: 1fr 380px;
@@ -138,17 +105,16 @@ export default function ContactPage() {
 
         .form-main {
           padding: 64px 48px;
-          border-right: 1px solid var(--border);
+          border-right: var(--border-w) solid var(--border);
         }
 
         .form-sidebar {
-          padding: 64px 48px;
+          padding: 64px 40px;
           display: flex;
           flex-direction: column;
-          gap: 48px;
+          gap: 40px;
         }
 
-        /* FORM FIELDS */
         .form-row {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -163,43 +129,40 @@ export default function ContactPage() {
           margin-bottom: 32px;
         }
 
-        .form-field.full { margin-bottom: 32px; }
-
         .field-label {
+          font-family: var(--font-body);
           font-size: 10px;
+          font-weight: 500;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: var(--warm-gray);
+          color: var(--text-muted);
         }
 
-        .field-required {
-          color: var(--accent);
-          margin-left: 2px;
-        }
+        .field-required { color: var(--accent); margin-left: 2px; }
 
         .field-input {
-          font-family: 'DM Mono', monospace;
+          font-family: var(--font-body);
           font-size: 14px;
-          color: var(--ink);
+          color: var(--text-primary);
           background: transparent;
           border: none;
-          border-bottom: 1px solid var(--border);
+          border-bottom: var(--border-w) solid var(--border);
           padding: 12px 0;
           outline: none;
           transition: border-color 0.2s;
           width: 100%;
         }
 
-        .field-input:focus { border-color: var(--ink); }
-        .field-input::placeholder { color: var(--border); }
+        .field-input:focus { border-color: var(--accent); }
+        .field-input::placeholder { color: var(--text-muted); }
 
         .field-textarea {
-          font-family: 'DM Mono', monospace;
+          font-family: var(--font-body);
           font-size: 14px;
-          color: var(--ink);
+          color: var(--text-primary);
           background: transparent;
           border: none;
-          border-bottom: 1px solid var(--border);
+          border-bottom: var(--border-w) solid var(--border);
           padding: 12px 0;
           outline: none;
           resize: none;
@@ -208,10 +171,9 @@ export default function ContactPage() {
           min-height: 140px;
         }
 
-        .field-textarea:focus { border-color: var(--ink); }
-        .field-textarea::placeholder { color: var(--border); }
+        .field-textarea:focus { border-color: var(--accent); }
+        .field-textarea::placeholder { color: var(--text-muted); }
 
-        /* SELECT CHIPS */
         .chip-group {
           display: flex;
           flex-wrap: wrap;
@@ -219,49 +181,46 @@ export default function ContactPage() {
         }
 
         .chip {
-          font-family: 'DM Mono', monospace;
+          font-family: var(--font-body);
           font-size: 11px;
+          font-weight: 500;
           letter-spacing: 0.08em;
           padding: 8px 16px;
-          border: 1px solid var(--border);
+          border: var(--border-w) solid var(--border);
           background: transparent;
-          color: var(--warm-gray);
+          color: var(--text-muted);
           cursor: pointer;
           transition: all 0.2s;
         }
 
-        .chip:hover { border-color: var(--ink); color: var(--ink); }
+        .chip:hover { border-color: var(--text-primary); color: var(--text-primary); }
+        .chip.selected { background: var(--text-primary); color: var(--bg); border-color: var(--text-primary); }
 
-        .chip.selected {
-          background: var(--ink);
-          color: var(--cream);
-          border-color: var(--ink);
-        }
-
-        /* SUBMIT */
         .submit-row {
           display: flex;
           align-items: center;
           justify-content: space-between;
           margin-top: 48px;
           padding-top: 32px;
-          border-top: 1px solid var(--border);
+          border-top: var(--border-w) solid var(--border);
         }
 
         .submit-note {
+          font-family: var(--font-body);
           font-size: 11px;
           letter-spacing: 0.08em;
-          color: var(--warm-gray);
+          color: var(--text-muted);
         }
 
         .submit-btn {
-          font-family: 'DM Mono', monospace;
+          font-family: var(--font-body);
           font-size: 12px;
+          font-weight: 600;
           letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: var(--cream);
-          background: var(--ink);
-          border: none;
+          color: var(--text-primary);
+          background: var(--accent-bg);
+          border: var(--border-w-thick) solid var(--accent-bg);
           padding: 16px 40px;
           cursor: pointer;
           transition: all 0.2s;
@@ -270,128 +229,98 @@ export default function ContactPage() {
           gap: 12px;
         }
 
-        .submit-btn:hover { background: var(--accent); }
-        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
+        .submit-btn:hover { background: var(--accent-bg-hover); border-color: var(--accent-bg-hover); }
+        .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
         .submit-arrow { transition: transform 0.2s; }
         .submit-btn:hover .submit-arrow { transform: translateX(4px); }
 
-        /* SUCCESS / ERROR */
         .status-success {
           padding: 20px 24px;
-          border: 1px solid #4CAF50;
-          background: rgba(76, 175, 80, 0.06);
+          border: var(--border-w) solid var(--success);
+          background: rgba(74, 122, 74, 0.1);
           margin-bottom: 32px;
         }
 
         .status-error {
           padding: 20px 24px;
-          border: 1px solid var(--accent);
-          background: rgba(200, 89, 58, 0.06);
+          border: var(--border-w) solid var(--error);
+          background: rgba(198, 40, 40, 0.1);
           margin-bottom: 32px;
         }
 
         .status-text {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 18px;
-          font-weight: 300;
+          font-family: var(--font-body);
+          font-size: 14px;
           line-height: 1.5;
+          color: var(--text-secondary);
         }
 
-        /* SIDEBAR INFO */
+        .sidebar-quote {
+          font-family: var(--font-display);
+          font-size: 28px;
+          font-weight: 700;
+          line-height: 1.2;
+          color: var(--text-primary);
+        }
+
+        .sidebar-quote .accent { color: var(--accent); }
+
         .sidebar-item {
-          border-top: 1px solid var(--border);
-          padding-top: 24px;
+          border-top: var(--border-w) solid var(--border);
+          padding-top: 20px;
         }
 
         .sidebar-label {
+          font-family: var(--font-body);
           font-size: 10px;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: var(--warm-gray);
-          margin-bottom: 10px;
+          color: var(--text-muted);
+          margin-bottom: 8px;
         }
 
         .sidebar-value {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 20px;
-          font-weight: 300;
-          color: var(--ink);
-          line-height: 1.4;
+          font-family: var(--font-display);
+          font-size: 16px;
+          font-weight: 500;
+          color: var(--text-secondary);
+          line-height: 1.5;
         }
 
         .sidebar-value a {
-          color: var(--ink);
-          text-decoration: none;
+          color: var(--text-secondary);
           border-bottom: 1px solid var(--border);
-          transition: border-color 0.2s;
+          transition: all 0.2s;
         }
 
-        .sidebar-value a:hover { border-color: var(--accent); color: var(--accent); }
-
-        .sidebar-quote {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 28px;
-          font-weight: 300;
-          font-style: italic;
-          line-height: 1.4;
-          color: var(--ink);
-          margin-top: 48px;
-        }
-
-        .sidebar-quote em { color: var(--accent); }
-
-        .footer {
-          padding: 32px 48px;
-          border-top: 1px solid var(--border);
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .footer-copy {
-          font-size: 11px;
-          letter-spacing: 0.08em;
-          color: var(--warm-gray);
-        }
-
-        .footer-tagline {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 13px;
-          font-style: italic;
-          color: var(--warm-gray);
-        }
+        .sidebar-value a:hover { color: var(--accent); border-color: var(--accent); }
 
         @media (max-width: 900px) {
-          .page-header { grid-template-columns: 1fr; padding: 40px 24px 32px; }
+          .page-header { grid-template-columns: 1fr; padding: 40px 20px 32px; }
           .form-wrapper { grid-template-columns: 1fr; }
-          .form-main { padding: 40px 24px; border-right: none; border-bottom: 1px solid var(--border); }
-          .form-sidebar { padding: 40px 24px; }
+          .form-main { padding: 40px 20px; border-right: none; border-bottom: var(--border-w) solid var(--border); }
+          .form-sidebar { padding: 40px 20px; }
           .form-row { grid-template-columns: 1fr; gap: 0; }
-          .footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
         }
       `}</style>
 
       <Nav activePage="contact" />
 
       <main>
-        {/* PAGE HEADER */}
         <div className="page-header">
           <h1 className="page-title">
-            Get in<br /><em>Touch</em>
+            Get in<br /><span className="accent">Touch</span>
           </h1>
           <p className="page-intro">
-            Have a project in mind? I'd love to hear about it. Fill out the form and I'll get back to you within 48 hours.
+            Have a project in mind? I&apos;d love to hear about it. Fill out the form and I&apos;ll get back to you within 48 hours.
           </p>
         </div>
 
         <div className="form-wrapper">
-          {/* FORM */}
           <div className="form-main">
-
             {status === "success" && (
               <div className="status-success">
-                <p className="status-text">Thank you — your message has been sent. I'll be in touch within 48 hours.</p>
+                <p className="status-text">Thank you &mdash; your message has been sent. I&apos;ll be in touch within 48 hours.</p>
               </div>
             )}
 
@@ -401,110 +330,66 @@ export default function ContactPage() {
               </div>
             )}
 
-            {/* Name + Email */}
             <div className="form-row">
               <div className="form-field">
-                <label className="field-label">Name <span className="field-required">*</span></label>
-                <input
-                  className="field-input"
-                  type="text"
-                  placeholder="Your full name"
-                  value={form.name}
-                  onChange={e => update("name", e.target.value)}
-                />
+                <label className="field-label" htmlFor="contact-name">Name <span className="field-required">*</span></label>
+                <input id="contact-name" className="field-input" type="text" placeholder="Your full name" value={form.name} onChange={(e) => update("name", e.target.value)} />
               </div>
               <div className="form-field">
-                <label className="field-label">Email <span className="field-required">*</span></label>
-                <input
-                  className="field-input"
-                  type="email"
-                  placeholder="your@email.com"
-                  value={form.email}
-                  onChange={e => update("email", e.target.value)}
-                />
+                <label className="field-label" htmlFor="contact-email">Email <span className="field-required">*</span></label>
+                <input id="contact-email" className="field-input" type="email" placeholder="your@email.com" value={form.email} onChange={(e) => update("email", e.target.value)} />
               </div>
             </div>
 
-            {/* Subject */}
-            <div className="form-field full">
-              <label className="field-label">Subject</label>
-              <input
-                className="field-input"
-                type="text"
-                placeholder="What's this about?"
-                value={form.subject}
-                onChange={e => update("subject", e.target.value)}
-              />
+            <div className="form-field">
+              <label className="field-label" htmlFor="contact-subject">Subject</label>
+              <input id="contact-subject" className="field-input" type="text" placeholder="What's this about?" value={form.subject} onChange={(e) => update("subject", e.target.value)} />
             </div>
 
-            {/* Project Type */}
-            <div className="form-field full">
+            <div className="form-field">
               <label className="field-label">Project Type</label>
               <div className="chip-group">
-                {PROJECT_TYPES.map(type => (
-                  <button
-                    key={type}
-                    className={`chip ${form.projectType === type ? "selected" : ""}`}
-                    onClick={() => update("projectType", form.projectType === type ? "" : type)}
-                  >
+                {PROJECT_TYPES.map((type) => (
+                  <button key={type} className={`chip ${form.projectType === type ? "selected" : ""}`} onClick={() => update("projectType", form.projectType === type ? "" : type)}>
                     {type}
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Budget */}
-            <div className="form-field full">
+            <div className="form-field">
               <label className="field-label">Budget Range</label>
               <div className="chip-group">
-                {BUDGET_RANGES.map(range => (
-                  <button
-                    key={range}
-                    className={`chip ${form.budget === range ? "selected" : ""}`}
-                    onClick={() => update("budget", form.budget === range ? "" : range)}
-                  >
+                {BUDGET_RANGES.map((range) => (
+                  <button key={range} className={`chip ${form.budget === range ? "selected" : ""}`} onClick={() => update("budget", form.budget === range ? "" : range)}>
                     {range}
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Message */}
-            <div className="form-field full">
-              <label className="field-label">Message <span className="field-required">*</span></label>
-              <textarea
-                className="field-textarea"
-                placeholder="Tell me about your project, timeline, and any other details..."
-                value={form.message}
-                onChange={e => update("message", e.target.value)}
-              />
+            <div className="form-field">
+              <label className="field-label" htmlFor="contact-message">Message <span className="field-required">*</span></label>
+              <textarea id="contact-message" className="field-textarea" placeholder="Tell me about your project, timeline, and any other details..." value={form.message} onChange={(e) => update("message", e.target.value)} />
             </div>
 
-            {/* Submit */}
             <div className="submit-row">
               <span className="submit-note">* Required fields</span>
-              <button
-                className="submit-btn"
-                onClick={handleSubmit}
-                disabled={status === "sending" || !form.name || !form.email || !form.message}
-              >
+              <button className="submit-btn" onClick={handleSubmit} disabled={status === "sending" || !form.name || !form.email || !form.message}>
                 {status === "sending" ? "Sending..." : "Send Message"}
-                <span className="submit-arrow">→</span>
+                <span className="submit-arrow">&rarr;</span>
               </button>
             </div>
           </div>
 
-          {/* SIDEBAR */}
           <div className="form-sidebar">
             <p className="sidebar-quote">
-              Great work starts with a <em>great conversation.</em>
+              Great work starts with a <span className="accent">great conversation.</span>
             </p>
 
             <div className="sidebar-item">
               <p className="sidebar-label">Email</p>
-              <p className="sidebar-value">
-                <a href="mailto:hello@kylelittlestar.com">hello@kylelittlestar.com</a>
-              </p>
+              <p className="sidebar-value"><a href="mailto:hello@ltlstar.com">hello@ltlstar.com</a></p>
             </div>
 
             <div className="sidebar-item">
@@ -514,7 +399,7 @@ export default function ContactPage() {
 
             <div className="sidebar-item">
               <p className="sidebar-label">Available For</p>
-              <p className="sidebar-value">Freelance · Collaboration<br />Full-time Opportunities</p>
+              <p className="sidebar-value">Freelance &middot; Collaboration<br />Full-time Opportunities</p>
             </div>
 
             <div className="sidebar-item">
@@ -525,10 +410,7 @@ export default function ContactPage() {
         </div>
       </main>
 
-      <footer className="footer">
-        <span className="footer-copy">© 2024 Kyle Littlestar. All rights reserved.</span>
-        <span className="footer-tagline">Type enthusiast & adventurist</span>
-      </footer>
+      <Footer />
     </>
   );
 }

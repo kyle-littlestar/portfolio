@@ -4,15 +4,15 @@ import { useState } from "react";
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
-import { getCompletedProjects } from "@/lib/projects-data";
+import { getInProgressProjects } from "@/lib/projects-data";
 
-const completedProjects = getCompletedProjects();
-const DISCIPLINE_FILTERS = ["All", "Graphic Design", "UI/UX Design", "Motion Design", "Photography"];
+const inProgressProjects = getInProgressProjects();
+const DISCIPLINE_FILTERS = ["All", ...Array.from(new Set(inProgressProjects.map((p) => p.discipline)))];
 
-export default function ProjectsPage() {
+export default function BuildingPage() {
   const [disciplineFilter, setDisciplineFilter] = useState<string>("All");
 
-  const filtered = completedProjects.filter(
+  const filtered = inProgressProjects.filter(
     (p) => disciplineFilter === "All" || p.discipline === disciplineFilter,
   );
 
@@ -39,6 +39,15 @@ export default function ProjectsPage() {
         }
 
         .page-title .accent { color: var(--accent); }
+
+        .page-subtitle {
+          font-family: var(--font-body);
+          font-size: 13px;
+          line-height: 1.6;
+          color: var(--text-muted);
+          max-width: 400px;
+          margin-top: 16px;
+        }
 
         .project-count {
           font-family: var(--font-body);
@@ -119,6 +128,22 @@ export default function ProjectsPage() {
           color: rgba(255,255,255,0.12);
         }
 
+        .project-card-phase {
+          position: absolute;
+          top: 12px;
+          left: 12px;
+          font-family: var(--font-body);
+          font-size: 10px;
+          font-weight: 600;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          padding: 4px 10px;
+          border: var(--border-w) solid;
+          color: var(--warning);
+          border-color: var(--warning);
+          background: rgba(196, 154, 60, 0.15);
+        }
+
         .project-card-info { padding: 24px 28px; }
 
         .project-card-discipline {
@@ -176,23 +201,30 @@ export default function ProjectsPage() {
         }
       `}</style>
 
-      <Nav activePage="work" />
+      <Nav activePage="building" />
 
       <main>
         <div className="page-header">
-          <h1 className="page-title">
-            Selected<br /><span className="accent">Work</span>
-          </h1>
-          <span className="project-count">{completedProjects.length} Projects</span>
+          <div>
+            <h1 className="page-title">
+              Currently<br /><span className="accent">Building</span>
+            </h1>
+            <p className="page-subtitle">
+              Living documents — work in progress, open process, honest reflections.
+            </p>
+          </div>
+          <span className="project-count">{inProgressProjects.length} Projects</span>
         </div>
 
-        <div className="filters">
-          {DISCIPLINE_FILTERS.map((d) => (
-            <button key={d} className={`filter-btn ${disciplineFilter === d ? "active" : ""}`} onClick={() => setDisciplineFilter(d)}>
-              {d}
-            </button>
-          ))}
-        </div>
+        {DISCIPLINE_FILTERS.length > 2 && (
+          <div className="filters">
+            {DISCIPLINE_FILTERS.map((d) => (
+              <button key={d} className={`filter-btn ${disciplineFilter === d ? "active" : ""}`} onClick={() => setDisciplineFilter(d)}>
+                {d}
+              </button>
+            ))}
+          </div>
+        )}
 
         <div className="project-grid">
           {filtered.length > 0 ? filtered.map((project) => (
@@ -201,6 +233,9 @@ export default function ProjectsPage() {
                 <div className="project-card-color" style={{ background: project.mediaColor || "#1A1714" }}>
                   <span>Preview</span>
                 </div>
+                {project.currentPhase && (
+                  <span className="project-card-phase">{project.currentPhase}</span>
+                )}
               </div>
               <div className="project-card-info">
                 <p className="project-card-discipline">{project.discipline}</p>

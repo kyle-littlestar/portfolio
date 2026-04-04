@@ -1,8 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
-export function Nav({ activePage }: { activePage?: "home" | "projects" | "contact" | "blog" }) {
+type NavPage = "home" | "work" | "building" | "contact" | "journal";
+
+const NAV_LINKS: { label: string; href: string; page: NavPage }[] = [
+  { label: "Work", href: "/projects", page: "work" },
+  { label: "Building", href: "/building", page: "building" },
+  { label: "Journal", href: "/blog", page: "journal" },
+  { label: "Contact", href: "/contact", page: "contact" },
+];
+
+export function Nav({ activePage }: { activePage?: NavPage }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -12,7 +22,6 @@ export function Nav({ activePage }: { activePage?: "home" | "projects" | "contac
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Prevent body scroll when menu is open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
@@ -25,28 +34,37 @@ export function Nav({ activePage }: { activePage?: "home" | "projects" | "contac
           position: fixed;
           top: 0; left: 0; right: 0;
           z-index: 200;
-          padding: 28px 48px;
+          padding: 20px 48px;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          background: var(--cream);
-          border-bottom: 1px solid var(--border);
-          transition: box-shadow 0.2s;
+          background: var(--bg);
+          border-bottom: var(--border-w) solid var(--border);
+          transition: background 0.3s, border-color 0.3s;
         }
 
         .nav.scrolled {
-          box-shadow: 0 1px 24px rgba(26,24,20,0.06);
+          background: rgba(12, 10, 9, 0.95);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border-color: var(--border-strong);
         }
 
         .nav-logo {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 18px;
-          font-weight: 600;
-          letter-spacing: 0.02em;
-          color: var(--ink);
+          font-family: var(--font-display);
+          font-size: 20px;
+          font-weight: 800;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--text-primary);
           text-decoration: none;
           z-index: 210;
           position: relative;
+          transition: color 0.2s;
+        }
+
+        .nav-logo:hover {
+          color: var(--accent-hover);
         }
 
         .nav-links {
@@ -56,23 +74,41 @@ export function Nav({ activePage }: { activePage?: "home" | "projects" | "contac
         }
 
         .nav-links a {
+          font-family: var(--font-body);
           font-size: 11px;
-          letter-spacing: 0.12em;
+          font-weight: 500;
+          letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: var(--warm-gray);
+          color: var(--text-muted);
           text-decoration: none;
           transition: color 0.2s;
+          position: relative;
         }
 
-        .nav-links a:hover,
-        .nav-links a.active { color: var(--ink); }
+        .nav-links a:hover {
+          color: var(--text-primary);
+        }
 
-        /* HAMBURGER BUTTON */
+        .nav-links a.active {
+          color: var(--accent);
+        }
+
+        .nav-links a.active::after {
+          content: '';
+          position: absolute;
+          bottom: -6px;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: var(--accent);
+        }
+
+        /* HAMBURGER */
         .hamburger {
           display: none;
           flex-direction: column;
           justify-content: center;
-          gap: 5px;
+          gap: 6px;
           width: 32px;
           height: 32px;
           background: none;
@@ -86,14 +122,14 @@ export function Nav({ activePage }: { activePage?: "home" | "projects" | "contac
         .hamburger-line {
           display: block;
           width: 24px;
-          height: 1px;
-          background: var(--ink);
+          height: 2px;
+          background: var(--text-primary);
           transition: all 0.3s ease;
           transform-origin: center;
         }
 
         .hamburger.open .hamburger-line:nth-child(1) {
-          transform: translateY(6px) rotate(45deg);
+          transform: translateY(8px) rotate(45deg);
         }
 
         .hamburger.open .hamburger-line:nth-child(2) {
@@ -102,20 +138,20 @@ export function Nav({ activePage }: { activePage?: "home" | "projects" | "contac
         }
 
         .hamburger.open .hamburger-line:nth-child(3) {
-          transform: translateY(-6px) rotate(-45deg);
+          transform: translateY(-8px) rotate(-45deg);
         }
 
-        /* MOBILE MENU OVERLAY */
+        /* MOBILE MENU */
         .mobile-menu {
           position: fixed;
           inset: 0;
           z-index: 190;
-          background: var(--cream);
+          background: var(--bg);
           display: flex;
           flex-direction: column;
           justify-content: center;
           align-items: center;
-          gap: 0;
+          gap: 8px;
           opacity: 0;
           pointer-events: none;
           transition: opacity 0.3s ease;
@@ -127,18 +163,19 @@ export function Nav({ activePage }: { activePage?: "home" | "projects" | "contac
         }
 
         .mobile-menu-link {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: clamp(48px, 12vw, 80px);
-          font-weight: 300;
+          font-family: var(--font-display);
+          font-size: clamp(40px, 10vw, 64px);
+          font-weight: 800;
+          text-transform: uppercase;
           line-height: 1.1;
-          color: var(--ink);
+          color: var(--text-primary);
           text-decoration: none;
-          letter-spacing: -0.01em;
-          transition: color 0.2s, transform 0.2s;
-          transform: translateY(16px);
+          letter-spacing: -0.02em;
+          transition: color 0.2s, transform 0.3s;
+          transform: translateY(20px);
           opacity: 0;
           display: block;
-          padding: 8px 0;
+          padding: 4px 0;
         }
 
         .mobile-menu.open .mobile-menu-link {
@@ -149,19 +186,21 @@ export function Nav({ activePage }: { activePage?: "home" | "projects" | "contac
         .mobile-menu.open .mobile-menu-link:nth-child(1) { transition-delay: 0.05s; }
         .mobile-menu.open .mobile-menu-link:nth-child(2) { transition-delay: 0.1s; }
         .mobile-menu.open .mobile-menu-link:nth-child(3) { transition-delay: 0.15s; }
+        .mobile-menu.open .mobile-menu-link:nth-child(4) { transition-delay: 0.2s; }
 
-        .mobile-menu-link:hover { color: var(--accent); }
-        .mobile-menu-link.active { color: var(--accent); font-style: italic; }
+        .mobile-menu-link:hover { color: var(--accent-hover); }
+        .mobile-menu-link.active { color: var(--accent); }
 
         .mobile-menu-footer {
           position: absolute;
           bottom: 40px;
+          font-family: var(--font-body);
           font-size: 11px;
           letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: var(--warm-gray);
+          color: var(--text-muted);
           opacity: 0;
-          transition: opacity 0.3s ease 0.2s;
+          transition: opacity 0.3s ease 0.25s;
         }
 
         .mobile-menu.open .mobile-menu-footer {
@@ -169,24 +208,25 @@ export function Nav({ activePage }: { activePage?: "home" | "projects" | "contac
         }
 
         @media (max-width: 768px) {
-          .nav { padding: 20px 24px; }
+          .nav { padding: 16px 20px; }
           .nav-links { display: none; }
           .hamburger { display: flex; }
         }
       `}</style>
 
       <nav className={`nav ${scrolled ? "scrolled" : ""}`}>
-        <a href="/" className="nav-logo">KL</a>
+        <Link href="/" className="nav-logo">Kyle Littlestar</Link>
 
-        {/* Desktop links */}
         <ul className="nav-links">
-          <li><a href="/" className={activePage === "home" ? "active" : ""}>About</a></li>
-          <li><a href="/projects" className={activePage === "projects" ? "active" : ""}>Work</a></li>
-          <li><a href="/contact" className={activePage === "contact" ? "active" : ""}>Contact</a></li>
-          <li><a href="/blog" className={activePage === "blog" ? "active" : ""}>Journal</a></li>
+          {NAV_LINKS.map(({ label, href, page }) => (
+            <li key={page}>
+              <Link href={href} className={activePage === page ? "active" : ""}>
+                {label}
+              </Link>
+            </li>
+          ))}
         </ul>
 
-        {/* Hamburger button */}
         <button
           className={`hamburger ${menuOpen ? "open" : ""}`}
           onClick={() => setMenuOpen(!menuOpen)}
@@ -198,15 +238,15 @@ export function Nav({ activePage }: { activePage?: "home" | "projects" | "contac
         </button>
       </nav>
 
-      {/* Mobile menu overlay */}
       <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
-        <a href="/" className={`mobile-menu-link ${activePage === "home" ? "active" : ""}`} onClick={() => setMenuOpen(false)}>About</a>
-        <a href="/projects" className={`mobile-menu-link ${activePage === "projects" ? "active" : ""}`} onClick={() => setMenuOpen(false)}>Work</a>
-        <a href="/#contact" className={`mobile-menu-link`} onClick={() => setMenuOpen(false)}>Contact</a>
-        <span className="mobile-menu-footer">Kyle Littlestar — 2024</span>
+        <Link href="/" className={`mobile-menu-link ${activePage === "home" ? "active" : ""}`} onClick={() => setMenuOpen(false)}>Home</Link>
+        {NAV_LINKS.map(({ label, href, page }) => (
+          <Link key={page} href={href} className={`mobile-menu-link ${activePage === page ? "active" : ""}`} onClick={() => setMenuOpen(false)}>
+            {label}
+          </Link>
+        ))}
+        <span className="mobile-menu-footer">Kyle Littlestar &mdash; 2026</span>
       </div>
     </>
   );
 }
-
-
