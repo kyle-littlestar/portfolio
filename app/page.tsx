@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
@@ -553,9 +554,13 @@ export default function Home() {
               {featuredProjects.map((project) => (
                 <Link key={project.id} href={`/projects/${project.slug}`} className="featured-card fade-up delay-3">
                   <div className="featured-card-media">
-                    <div className="featured-card-color" style={{ background: project.mediaColor || "#1A1714" }}>
-                      <span>Preview</span>
-                    </div>
+                    {project.mediaType === "image" && project.mediaSrc ? (
+                      <Image src={project.mediaSrc} alt={project.title} fill sizes="(max-width: 900px) 100vw, 33vw" style={{ objectFit: "cover", objectPosition: "top" }} />
+                    ) : (
+                      <div className="featured-card-color" style={{ background: project.mediaColor || "#1A1714" }}>
+                        <span>Preview</span>
+                      </div>
+                    )}
                     <span className={`featured-card-status ${project.status === "completed" ? "status-completed" : "status-in-progress"}`}>
                       {project.status === "completed" ? "Completed" : "In Progress"}
                     </span>

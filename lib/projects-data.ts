@@ -54,6 +54,23 @@ export type Project = {
 export const projects: Project[] = [
   // ── COMPLETED PROJECTS ─────────────────────────
   {
+    id: 6,
+    slug: "flight-trip-planner",
+    title: "Flight Trip Planner",
+    discipline: "UI/UX Design",
+    status: "completed",
+    provenance: "Self-initiated concept",
+    description: "Planning a drone shoot day in one flow — location, airspace/LAANC/weather status, an optional shot list, gear, and a trip-readiness summary.",
+    overview: "A solo UX/UI concept exploring how a recreational drone pilot might assemble a clear, revisit-able shoot-day plan instead of manually cross-checking maps, an airspace tool, LAANC, and a weather service. Research is a retrospective self-audit of my own most recent Orlando drone shoot, paired with a narrow competitive scan. The result is a 14-frame, high-fidelity interactive Figma prototype covering the full flow and every status state. This is an exploratory concept: moderated usability testing is written and ready to run, but hasn't happened yet — see the full case study for the evidence, decisions, and boundaries.",
+    year: "2026",
+    role: ["UX Research", "Interaction Design", "Wireframing", "Prototyping", "Accessibility Review"],
+    deliverables: ["Research Audit", "Persona & Journey Map", "Lo-fi & Hi-fi Wireframes", "Interactive Figma Prototype", "Case Study"],
+    mediaType: "image",
+    mediaSrc: "/projects/flight-trip-planner/02a-airspace-weather-go.png",
+    featured: true,
+    gallery: [],
+  },
+  {
     id: 1,
     slug: "aether-brand-system",
     title: "Aether Brand System",

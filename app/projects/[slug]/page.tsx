@@ -2,7 +2,20 @@ import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { projects, getProjectBySlug, getAdjacentProjects } from "@/lib/projects-data";
 import type { ProjectPhase, GalleryItem } from "@/lib/projects-data";
+import { getCaseStudyContent } from "@/lib/case-studies";
+import { MDXRemote } from "next-mdx-remote/rsc";
+import Image from "next/image";
 import Link from "next/link";
+
+const caseStudyComponents = {
+  img: (props: React.ImgHTMLAttributes<HTMLImageElement>) => (
+    // Case-study screenshots are a fixed 375x812 export, but figures use flexible
+    // side-by-side layout (see .case-study-body figure), so intrinsic next/image
+    // sizing isn't a clean fit here either — same reasoning as the blog's img override.
+    // eslint-disable-next-line @next/next/no-img-element
+    <img {...props} alt={props.alt || ""} />
+  ),
+};
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
@@ -24,6 +37,11 @@ function ProgressTracker({ phases, currentPhase }: { phases: ProjectPhase[]; cur
 }
 
 function GalleryMedia({ item }: { item: GalleryItem }) {
+  if (item.type === "image" && item.src) {
+    return (
+      <Image src={item.src} alt={item.caption || ""} fill sizes="(max-width: 900px) 100vw, 50vw" style={{ objectFit: "cover" }} />
+    );
+  }
   if (item.type === "color") {
     return (
       <div style={{ width: "100%", height: "100%", minHeight: "200px", background: item.color, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -53,6 +71,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   }
 
   const isInProgress = project.status === "in-progress";
+  const caseStudyContent = getCaseStudyContent(slug);
 
   return (
     <>
@@ -234,6 +253,90 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           white-space: pre-line;
         }
 
+        /* CASE STUDY (MDX) */
+        .case-study-body {
+          max-width: 800px;
+          margin: 0 auto;
+          padding: 64px 48px 80px;
+        }
+
+        .case-study-body p {
+          font-family: var(--font-body);
+          font-size: 15px;
+          line-height: 1.8;
+          color: var(--text-secondary);
+          margin-bottom: 24px;
+        }
+
+        .case-study-body h2 {
+          font-family: var(--font-display);
+          font-size: 28px;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: -0.01em;
+          color: var(--text-primary);
+          margin: 56px 0 20px;
+        }
+
+        .case-study-body h3 {
+          font-family: var(--font-display);
+          font-size: 20px;
+          font-weight: 600;
+          color: var(--text-primary);
+          margin: 40px 0 16px;
+        }
+
+        .case-study-body strong { font-weight: 700; color: var(--text-primary); }
+        .case-study-body em { color: var(--accent); }
+
+        .case-study-body a {
+          color: var(--text-primary);
+          border-bottom: 1px solid var(--accent);
+          transition: color 0.2s;
+        }
+
+        .case-study-body a:hover { color: var(--accent); }
+
+        .case-study-body hr {
+          border: none;
+          border-top: var(--border-w) solid var(--border);
+          margin: 48px 0;
+        }
+
+        .case-study-body blockquote {
+          border-left: var(--border-w-thick) solid var(--accent);
+          padding-left: 24px;
+          margin: 32px 0;
+        }
+
+        .case-study-body blockquote p { color: var(--text-muted); margin-bottom: 12px; }
+        .case-study-body blockquote p:last-child { margin-bottom: 0; }
+
+        .case-study-body figure {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 12px;
+          margin: 32px 0 8px;
+        }
+
+        .case-study-body figure img {
+          flex: 1 1 220px;
+          min-width: 0;
+          width: 100%;
+          height: auto;
+          display: block;
+          border: var(--border-w) solid var(--border);
+        }
+
+        .case-study-body figcaption {
+          flex-basis: 100%;
+          font-family: var(--font-body);
+          font-size: 12px;
+          line-height: 1.6;
+          color: var(--text-muted);
+          margin: 12px 0 32px;
+        }
+
         /* GALLERY */
         .gallery-section {
           border-bottom: var(--border-w) solid var(--border);
@@ -245,9 +348,11 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         }
 
         .gallery-item {
+          position: relative;
           border-right: var(--border-w) solid var(--border);
           border-bottom: var(--border-w) solid var(--border);
           overflow: hidden;
+          min-height: 200px;
         }
 
         .gallery-item:nth-child(2n) { border-right: none; }
@@ -440,6 +545,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           .project-header-main { padding: 40px 20px; border-right: none; border-bottom: var(--border-w) solid var(--border); }
           .project-header-sidebar { padding: 32px 20px; }
           .overview-section { padding: 40px 20px; }
+          .case-study-body { padding: 40px 20px 64px; }
           .gallery-grid { grid-template-columns: 1fr; }
           .gallery-item { border-right: none; }
           .progress-section { padding: 40px 20px; }
@@ -517,24 +623,31 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           </div>
         )}
 
-        {/* OVERVIEW */}
-        <div className="overview-section">
-          <h2 className="section-heading">Overview</h2>
-          <p className="overview-text">{project.overview}</p>
-        </div>
-
-        {/* GALLERY */}
-        {project.gallery.length > 0 && (
-          <div className="gallery-section">
-            <div className="gallery-grid">
-              {project.gallery.map((item, i) => (
-                <div key={i} className={`gallery-item ${item.span === "full" ? "span-full" : ""}`}>
-                  <GalleryMedia item={item} />
-                  {item.caption && <p className="gallery-caption">{item.caption}</p>}
-                </div>
-              ))}
-            </div>
+        {/* CASE STUDY (rich MDX narrative) or OVERVIEW + GALLERY (structured fallback) */}
+        {caseStudyContent ? (
+          <div className="case-study-body">
+            <MDXRemote source={caseStudyContent} components={caseStudyComponents} />
           </div>
+        ) : (
+          <>
+            <div className="overview-section">
+              <h2 className="section-heading">Overview</h2>
+              <p className="overview-text">{project.overview}</p>
+            </div>
+
+            {project.gallery.length > 0 && (
+              <div className="gallery-section">
+                <div className="gallery-grid">
+                  {project.gallery.map((item, i) => (
+                    <div key={i} className={`gallery-item ${item.span === "full" ? "span-full" : ""}`}>
+                      <GalleryMedia item={item} />
+                      {item.caption && <p className="gallery-caption">{item.caption}</p>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
         )}
 
         {/* CHALLENGES & LESSONS (In-Progress) */}
