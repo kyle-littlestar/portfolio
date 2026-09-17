@@ -36,6 +36,20 @@ export default async function Image({ params }: { params: Promise<{ slug: string
 
         {/* Middle */}
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          {project && project.provenance !== "Live product" && (
+            <span
+              style={{
+                fontSize: 16,
+                color: "rgba(255,255,255,0.6)",
+                letterSpacing: "0.12em",
+                border: "2px solid rgba(255,255,255,0.3)",
+                padding: "6px 14px",
+                alignSelf: "flex-start",
+              }}
+            >
+              {project.provenance.toUpperCase()}
+            </span>
+          )}
           <span style={{ fontSize: 72, fontWeight: 300, color: "white", lineHeight: 0.9, letterSpacing: "-0.02em" }}>
             {project?.title || "Project"}
           </span>

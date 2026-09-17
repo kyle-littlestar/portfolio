@@ -57,8 +57,7 @@ export default function ContactPage() {
         body: JSON.stringify(form),
       });
       if (!res.ok) throw new Error();
-      setStatus("success");
-      setForm({ name: "", email: "", subject: "", message: "", projectType: "", budget: "" });
+      window.location.href = "/thank-you";
     } catch {
       setStatus("error");
     }

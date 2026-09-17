@@ -3,11 +3,12 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
-type NavPage = "home" | "work" | "building" | "contact" | "journal";
+type NavPage = "home" | "work" | "building" | "sketchbook" | "contact" | "journal";
 
 const NAV_LINKS: { label: string; href: string; page: NavPage }[] = [
   { label: "Work", href: "/projects", page: "work" },
   { label: "Building", href: "/building", page: "building" },
+  { label: "Sketchbook", href: "/sketchbook", page: "sketchbook" },
   { label: "Journal", href: "/blog", page: "journal" },
   { label: "Contact", href: "/contact", page: "contact" },
 ];

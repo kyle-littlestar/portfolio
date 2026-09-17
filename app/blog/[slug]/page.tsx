@@ -27,8 +27,12 @@ const components = {
     />
   ),
   img: (props: React.ImgHTMLAttributes<HTMLImageElement>) => (
+    // Arbitrary author-supplied MDX images with unknown intrinsic dimensions —
+    // not a good fit for next/image, which requires known width/height or a sized fill container.
+    // eslint-disable-next-line @next/next/no-img-element
     <img
       {...props}
+      alt={props.alt || ""}
       style={{ width: "100%", height: "auto", margin: "32px 0", display: "block" }}
     />
   ),
@@ -60,11 +64,32 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
         .back-bar {
           display: flex;
-          justify-content: center;
+          justify-content: space-between;
           align-items: center;
-          padding: 32px 48px;
+          padding: 20px 48px;
           border-bottom: var(--border-w) solid var(--border);
         }
+
+        .breadcrumbs {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-family: var(--font-body);
+          font-size: 11px;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--text-muted);
+        }
+
+        .breadcrumb-link {
+          color: var(--text-muted);
+          text-decoration: none;
+          transition: color 0.2s;
+        }
+
+        .breadcrumb-link:hover { color: var(--text-primary); }
+        .breadcrumb-sep { color: var(--border-strong); }
+        .breadcrumb-current { color: var(--text-secondary); }
 
         .back-link {
           display: inline-flex;
@@ -273,6 +298,13 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
       <main>
         <div className="back-bar">
+          <nav className="breadcrumbs" aria-label="Breadcrumb">
+            <Link href="/" className="breadcrumb-link">Home</Link>
+            <span className="breadcrumb-sep">/</span>
+            <Link href="/blog" className="breadcrumb-link">Journal</Link>
+            <span className="breadcrumb-sep">/</span>
+            <span className="breadcrumb-current">{post.title}</span>
+          </nav>
           <Link href="/blog" className="back-link">&larr; The Journal</Link>
         </div>
 
@@ -289,7 +321,9 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
         {post.coverImage && (
           <div className="post-cover">
-            <img src={post.coverImage} alt={post.title} />
+            {/* Natural aspect ratio, unknown at build time — not a fixed-box fill candidate. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={post.coverImage} alt={`Cover image for ${post.title}`} />
           </div>
         )}
 

@@ -13,12 +13,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return { title: "Project Not Found" };
   }
 
+  const description =
+    project.provenance === "Live product" ? project.description : `${project.provenance} — ${project.description}`;
+
   return {
     title: project.title,
-    description: project.description,
+    description,
     openGraph: {
       title: `${project.title} | Kyle Littlestar`,
-      description: project.description,
+      description,
       type: "article",
     },
   };

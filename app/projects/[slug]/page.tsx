@@ -1,7 +1,7 @@
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { projects, getProjectBySlug, getAdjacentProjects } from "@/lib/projects-data";
-import type { ProjectPhase } from "@/lib/projects-data";
+import type { ProjectPhase, GalleryItem } from "@/lib/projects-data";
 import Link from "next/link";
 
 export function generateStaticParams() {
@@ -23,7 +23,7 @@ function ProgressTracker({ phases, currentPhase }: { phases: ProjectPhase[]; cur
   );
 }
 
-function GalleryMedia({ item }: { item: any }) {
+function GalleryMedia({ item }: { item: GalleryItem }) {
   if (item.type === "color") {
     return (
       <div style={{ width: "100%", height: "100%", minHeight: "200px", background: item.color, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -61,11 +61,32 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
 
         .back-bar {
           display: flex;
-          justify-content: center;
+          justify-content: space-between;
           align-items: center;
-          padding: 32px 48px;
+          padding: 20px 48px;
           border-bottom: var(--border-w) solid var(--border);
         }
+
+        .breadcrumbs {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-family: var(--font-body);
+          font-size: 11px;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--text-muted);
+        }
+
+        .breadcrumb-link {
+          color: var(--text-muted);
+          text-decoration: none;
+          transition: color 0.2s;
+        }
+
+        .breadcrumb-link:hover { color: var(--text-primary); }
+        .breadcrumb-sep { color: var(--border-strong); }
+        .breadcrumb-current { color: var(--text-secondary); }
 
         .back-link {
           display: inline-flex;
@@ -115,6 +136,20 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
 
         .badge-completed { color: var(--success); border-color: var(--success); background: rgba(74,122,74,0.1); }
         .badge-in-progress { color: var(--warning); border-color: var(--warning); background: rgba(196,154,60,0.1); }
+
+        .provenance-badge {
+          display: inline-block;
+          font-family: var(--font-body);
+          font-size: 10px;
+          font-weight: 600;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          padding: 4px 12px;
+          border: var(--border-w) solid var(--border-strong);
+          color: var(--text-muted);
+          margin-bottom: 20px;
+          margin-left: 10px;
+        }
 
         .project-discipline {
           font-family: var(--font-body);
@@ -427,6 +462,15 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
 
       <main>
         <div className="back-bar">
+          <nav className="breadcrumbs" aria-label="Breadcrumb">
+            <Link href="/" className="breadcrumb-link">Home</Link>
+            <span className="breadcrumb-sep">/</span>
+            <Link href={isInProgress ? "/building" : "/projects"} className="breadcrumb-link">
+              {isInProgress ? "Building" : "Work"}
+            </Link>
+            <span className="breadcrumb-sep">/</span>
+            <span className="breadcrumb-current">{project.title}</span>
+          </nav>
           <Link href={isInProgress ? "/building" : "/projects"} className="back-link">
             &larr; {isInProgress ? "Building" : "All Projects"}
           </Link>
@@ -438,6 +482,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             <span className={`project-status-badge ${isInProgress ? "badge-in-progress" : "badge-completed"}`}>
               {isInProgress ? "In Progress" : "Completed"}
             </span>
+            <span className="provenance-badge">{project.provenance}</span>
             <p className="project-discipline">{project.discipline}</p>
             <h1 className="project-title">{project.title}</h1>
             <p className="project-description">{project.description}</p>

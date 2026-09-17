@@ -27,6 +27,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}>
       <head>
+        {/* next/third-parties/google's GoogleAnalytics component would resolve this lint
+            suggestion, but pulls in a new dependency (@next/third-parties) for a purely
+            stylistic warning — left as a plain script rather than adding one unasked. */}
+        {/* eslint-disable-next-line @next/next/next-script-for-ga */}
         <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-RX4SLL53VP"
@@ -39,6 +43,22 @@ export default function RootLayout({
               gtag('js', new Date());
               gtag('config', 'G-RX4SLL53VP');
             `,
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Kyle Littlestar",
+              url: "https://ltlstar.com",
+              email: "hello@ltlstar.com",
+              jobTitle: "Creative Designer",
+              description: "Multi-disciplinary creative designer specialising in graphic design, motion design, UI/UX, and photography.",
+              knowsAbout: ["Graphic Design", "Motion Design", "UI/UX Design", "Photography", "Brand Identity"],
+              sameAs: [],
+            }),
           }}
         />
       </head>

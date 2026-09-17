@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
@@ -94,6 +95,7 @@ export default function BlogPage({ posts }: { posts: Post[] }) {
         .featured-post:hover { background: var(--bg-surface); }
 
         .featured-cover {
+          position: relative;
           overflow: hidden;
           border-right: var(--border-w) solid var(--border);
           background: var(--bg-surface);
@@ -104,8 +106,6 @@ export default function BlogPage({ posts }: { posts: Post[] }) {
         }
 
         .featured-cover img {
-          width: 100%;
-          height: 100%;
           object-fit: cover;
           transition: transform 0.5s ease;
         }
@@ -230,6 +230,7 @@ export default function BlogPage({ posts }: { posts: Post[] }) {
         .post-row:hover { padding-left: 16px; }
 
         .post-row-cover {
+          position: relative;
           width: 200px;
           height: 120px;
           overflow: hidden;
@@ -238,8 +239,6 @@ export default function BlogPage({ posts }: { posts: Post[] }) {
         }
 
         .post-row-cover img {
-          width: 100%;
-          height: 100%;
           object-fit: cover;
           transition: transform 0.4s ease;
         }
@@ -331,7 +330,7 @@ export default function BlogPage({ posts }: { posts: Post[] }) {
           <Link href={`/blog/${filtered[0].slug}`} className="featured-post">
             <div className="featured-cover">
               {filtered[0].coverImage ? (
-                <img src={filtered[0].coverImage} alt={filtered[0].title} />
+                <Image src={filtered[0].coverImage} alt={filtered[0].title} fill sizes="(max-width: 900px) 100vw, 50vw" />
               ) : (
                 <div className="cover-placeholder">
                   <span className="cover-placeholder-text">Cover image</span>
@@ -364,7 +363,7 @@ export default function BlogPage({ posts }: { posts: Post[] }) {
                 <Link key={post.slug} href={`/blog/${post.slug}`} className="post-row">
                   <div className="post-row-cover">
                     {post.coverImage ? (
-                      <img src={post.coverImage} alt={post.title} />
+                      <Image src={post.coverImage} alt={post.title} fill sizes="(max-width: 768px) 100vw, 200px" />
                     ) : (
                       <div style={{ width: "100%", height: "100%", background: "var(--bg-surface)" }} />
                     )}

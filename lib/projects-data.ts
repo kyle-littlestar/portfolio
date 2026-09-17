@@ -8,6 +8,13 @@ export type GalleryItem = {
 
 export type ProjectStatus = "completed" | "in-progress";
 
+// What kind of evidence this project represents to a visitor — shown as a visible
+// label near the title everywhere the project appears (cards, detail page, metadata).
+// "Sample exercise" = fictional/self-directed practice, no real client or results.
+// "Self-initiated concept" = real work, done independently, not a paying engagement.
+// "Live product" = real, shipped, in-use work.
+export type ProjectProvenance = "Sample exercise" | "Self-initiated concept" | "Live product";
+
 export type ProjectPhase =
   | "Discovery"
   | "Research"
@@ -33,6 +40,7 @@ export type Project = {
   featured: boolean;
   gallery: GalleryItem[];
   status: ProjectStatus;
+  provenance: ProjectProvenance;
   // In-progress fields
   currentPhase?: ProjectPhase;
   phases?: ProjectPhase[];
@@ -51,12 +59,12 @@ export const projects: Project[] = [
     title: "Aether Brand System",
     discipline: "Graphic Design",
     status: "completed",
-    description: "A comprehensive identity system for a luxury wellness brand — logotype, color, typography, and motion guidelines woven into a single cohesive language.",
-    overview: "Aether approached me to build a brand identity from the ground up. The challenge was capturing a sense of elevated calm — something that felt both modern and timeless. The resulting system draws from minimalist principles, using generous whitespace, a refined typographic hierarchy, and a muted palette anchored by warm neutrals and a single terracotta accent.\n\nEvery touchpoint — from business cards to packaging to digital templates — was designed to feel like it belonged to the same world.",
+    provenance: "Sample exercise",
+    description: "A self-directed identity-system exercise for an imagined luxury wellness brand — logotype, color, typography, and motion guidelines woven into a single cohesive language.",
+    overview: "This is a self-directed exercise, not client work: I set myself the brief of building a brand identity from the ground up for an imagined luxury wellness brand. The challenge I gave myself was capturing a sense of elevated calm — something that felt both modern and timeless. The resulting system draws from minimalist principles, using generous whitespace, a refined typographic hierarchy, and a muted palette anchored by warm neutrals and a single terracotta accent.\n\nEvery touchpoint — from business cards to packaging to digital templates — was designed to feel like it belonged to the same world.",
     year: "2024",
     role: ["Brand Strategy", "Identity Design", "Art Direction", "Motion Guidelines"],
     deliverables: ["Logo System", "Brand Guidelines", "Color & Typography", "Stationery Suite", "Digital Templates", "Motion Principles"],
-    results: ["Brand recognition increased 40% in first quarter", "System adopted across 12 touchpoints", "Design consistency score improved from 45% to 92%"],
     mediaType: "color",
     mediaColor: "#1A1814",
     featured: true,
@@ -72,12 +80,12 @@ export const projects: Project[] = [
     title: "Flux UI Design System",
     discipline: "UI/UX Design",
     status: "completed",
-    description: "End-to-end design system for a fintech product — components, tokens, and interaction patterns built for scale.",
-    overview: "Flux needed a design system that could scale across web, iOS, and Android without losing coherence. Starting from a comprehensive audit of the existing product, I rebuilt the component library from scratch — establishing design tokens for color, spacing, and typography, then building every component in Figma with full documentation.\n\nThe system now supports a team of 12 designers and 30+ engineers across three platforms.",
+    provenance: "Sample exercise",
+    description: "A self-directed design-system exercise for an imagined fintech product — components, tokens, and interaction patterns built for scale.",
+    overview: "This is a self-directed exercise, not client work: I imagined a fintech product that needed a design system able to scale across web, iOS, and Android without losing coherence. Working from a brief I set for myself, I built a component library from scratch — establishing design tokens for color, spacing, and typography, then building every component in Figma with full documentation.\n\nThe exercise was scoped to prove the system could hold together across three platforms, not to demonstrate real-world adoption.",
     year: "2024",
     role: ["UX Strategy", "UI Design", "Design Systems", "Documentation"],
     deliverables: ["Design Tokens", "Component Library", "Figma System", "Documentation Site", "Handoff Specs"],
-    results: ["Reduced design-to-dev handoff time by 60%", "Scaled across 3 platforms with full parity", "Adopted by team of 42 across design and engineering"],
     mediaType: "color",
     mediaColor: "#1A1814",
     featured: false,
@@ -93,8 +101,9 @@ export const projects: Project[] = [
     title: "Solstice Title Sequence",
     discipline: "Motion Design",
     status: "completed",
-    description: "Opening titles for an independent documentary — hand-lettered type animated through film grain and light leaks.",
-    overview: "The director of Solstice wanted titles that felt handmade — something that pushed back against the sterile precision of digital tools. I started with hand-lettered type, scanned at high resolution, then built the animation entirely in After Effects using real film grain overlays and practical light leak footage.\n\nThe result is a 90-second sequence that feels like it was pulled from an archive.",
+    provenance: "Sample exercise",
+    description: "A self-directed motion exercise imagining opening titles for an independent documentary — hand-lettered type animated through film grain and light leaks.",
+    overview: "This is a self-directed exercise, not client work: I imagined a documentary called Solstice and set myself the brief of titles that felt handmade — something that pushed back against the sterile precision of digital tools. I started with hand-lettered type, scanned at high resolution, then built the animation entirely in After Effects using real film grain overlays and practical light leak footage.\n\nThe result is a 90-second sequence that feels like it was pulled from an archive.",
     year: "2023",
     role: ["Motion Design", "Hand Lettering", "Art Direction"],
     deliverables: ["Title Sequence", "Lower Thirds", "End Credits", "Motion Style Guide"],
@@ -115,6 +124,7 @@ export const projects: Project[] = [
     title: "Portfolio Rebuild",
     discipline: "UI/UX Design",
     status: "in-progress",
+    provenance: "Self-initiated concept",
     description: "Rebuilding my personal portfolio from the ground up — dark aesthetic blending Wabi Sabi, Dark Magic Academia, and Neo-Brutalism.",
     overview: "This is the site you're looking at right now. The previous version was warm and editorial — this rebuild pushes into darker, bolder territory. The goal is a portfolio that works as both a showcase and a living document of my process.",
     year: "2026",
@@ -146,8 +156,9 @@ export const projects: Project[] = [
     title: "Meridian App",
     discipline: "UI/UX Design",
     status: "in-progress",
-    description: "Travel companion app — research, wireframes, and high-fidelity prototype for iOS.",
-    overview: "Meridian started with a simple observation: spontaneous travel is broken. Every existing tool assumes you know where you're going. Meridian is designed for the opposite — helping people discover and plan trips on the fly, with minimal friction and maximum delight.",
+    provenance: "Sample exercise",
+    description: "A self-directed exercise imagining a travel companion app — research, wireframes, and a high-fidelity prototype for iOS.",
+    overview: "This is a self-directed exercise, not client work: a placeholder brief I set myself, starting from a simple observation — spontaneous travel is broken. Every existing tool assumes you know where you're going. Meridian is designed for the opposite — helping people discover and plan trips on the fly, with minimal friction and maximum delight.",
     year: "2025",
     role: ["UX Research", "Product Strategy", "UI Design", "Prototyping"],
     deliverables: ["Research Report", "User Flows", "Wireframes", "High-fidelity Prototype", "Usability Test Report"],
@@ -158,12 +169,12 @@ export const projects: Project[] = [
       "Handling offline-first architecture in the prototype",
     ],
     lessonsLearned: [
-      "User interviews revealed that 'discovery' means different things to different travel personas",
+      "Working assumption: 'discovery' likely means different things to different travel personas — untested, but shaping the flow",
       "Map-based interfaces need aggressive progressive disclosure",
     ],
     nextSteps: [
       "Complete high-fidelity prototype",
-      "Run usability testing round 2",
+      "Run a first round of usability testing",
       "Refine based on feedback",
     ],
     mediaType: "color",
@@ -199,4 +210,12 @@ export function getInProgressProjects(): Project[] {
 
 export function getFeaturedProjects(): Project[] {
   return projects.filter((p) => p.featured);
+}
+
+export function getSampleProjects(): Project[] {
+  return projects.filter((p) => p.provenance === "Sample exercise");
+}
+
+export function getRealProjects(): Project[] {
+  return projects.filter((p) => p.provenance !== "Sample exercise");
 }

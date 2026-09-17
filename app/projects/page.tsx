@@ -16,6 +16,9 @@ export default function ProjectsPage() {
     (p) => disciplineFilter === "All" || p.discipline === disciplineFilter,
   );
 
+  const realWork = filtered.filter((p) => p.provenance !== "Sample exercise");
+  const sampleWork = filtered.filter((p) => p.provenance === "Sample exercise");
+
   return (
     <>
       <style>{`
@@ -121,6 +124,36 @@ export default function ProjectsPage() {
 
         .project-card-info { padding: 24px 28px; }
 
+        .project-card-provenance {
+          font-family: var(--font-body);
+          font-size: 10px;
+          font-weight: 500;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--text-muted);
+          border: var(--border-w) solid var(--border-strong);
+          display: inline-block;
+          padding: 2px 8px;
+          margin-bottom: 10px;
+        }
+
+        .group-heading {
+          padding: 32px 48px 8px;
+          font-family: var(--font-display);
+          font-size: 22px;
+          font-weight: 700;
+          text-transform: uppercase;
+          color: var(--text-primary);
+        }
+
+        .group-subtitle {
+          padding: 0 48px 24px;
+          font-family: var(--font-body);
+          font-size: 13px;
+          color: var(--text-muted);
+          max-width: 560px;
+        }
+
         .project-card-discipline {
           font-family: var(--font-body);
           font-size: 10px;
@@ -173,6 +206,8 @@ export default function ProjectsPage() {
           .filters { padding: 16px 20px; }
           .project-grid { grid-template-columns: 1fr; }
           .project-card { border-right: none; }
+          .group-heading { padding: 24px 20px 8px; }
+          .group-subtitle { padding: 0 20px 16px; }
         }
       `}</style>
 
@@ -194,25 +229,63 @@ export default function ProjectsPage() {
           ))}
         </div>
 
-        <div className="project-grid">
-          {filtered.length > 0 ? filtered.map((project) => (
-            <Link key={project.id} href={`/projects/${project.slug}`} className="project-card">
-              <div className="project-card-media">
-                <div className="project-card-color" style={{ background: project.mediaColor || "#1A1714" }}>
-                  <span>Preview</span>
-                </div>
-              </div>
-              <div className="project-card-info">
-                <p className="project-card-discipline">{project.discipline}</p>
-                <h3 className="project-card-title">{project.title}</h3>
-                <p className="project-card-year">{project.year}</p>
-                <p className="project-card-desc">{project.description}</p>
-              </div>
-            </Link>
-          )) : (
+        {filtered.length === 0 && (
+          <div className="project-grid">
             <div className="empty-state">No projects match these filters.</div>
-          )}
-        </div>
+          </div>
+        )}
+
+        {realWork.length > 0 && (
+          <>
+            <h2 className="group-heading">Real Work</h2>
+            <div className="project-grid">
+              {realWork.map((project) => (
+                <Link key={project.id} href={`/projects/${project.slug}`} className="project-card">
+                  <div className="project-card-media">
+                    <div className="project-card-color" style={{ background: project.mediaColor || "#1A1714" }}>
+                      <span>Preview</span>
+                    </div>
+                  </div>
+                  <div className="project-card-info">
+                    <span className="project-card-provenance">{project.provenance}</span>
+                    <p className="project-card-discipline">{project.discipline}</p>
+                    <h3 className="project-card-title">{project.title}</h3>
+                    <p className="project-card-year">{project.year}</p>
+                    <p className="project-card-desc">{project.description}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
+
+        {sampleWork.length > 0 && (
+          <>
+            <h2 className="group-heading">Sample Exercises</h2>
+            <p className="group-subtitle">
+              Self-directed practice pieces — fictional briefs I set for myself to explore craft.
+              Not client work, no real outcomes to report.
+            </p>
+            <div className="project-grid">
+              {sampleWork.map((project) => (
+                <Link key={project.id} href={`/projects/${project.slug}`} className="project-card">
+                  <div className="project-card-media">
+                    <div className="project-card-color" style={{ background: project.mediaColor || "#1A1714" }}>
+                      <span>Preview</span>
+                    </div>
+                  </div>
+                  <div className="project-card-info">
+                    <span className="project-card-provenance">{project.provenance}</span>
+                    <p className="project-card-discipline">{project.discipline}</p>
+                    <h3 className="project-card-title">{project.title}</h3>
+                    <p className="project-card-year">{project.year}</p>
+                    <p className="project-card-desc">{project.description}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
       </main>
 
       <Footer />

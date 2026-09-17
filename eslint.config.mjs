@@ -12,6 +12,12 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Vendored agent-tooling scripts (installed skills), not app source.
+    ".agents/**",
+    ".claude/**",
+    ".codex/**",
+    ".github/**",
+    ".impeccable/**",
   ]),
 ]);
 

@@ -1,22 +1,14 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
-import { projects } from "@/lib/projects-data";
+import { getRealProjects, getSampleProjects } from "@/lib/projects-data";
 
 const DISCIPLINES = ["Graphic Design", "Motion Design", "UI / UX", "Photography"];
 
-const featuredProjects = projects.filter((p) => p.featured || p.status === "in-progress").slice(0, 3);
+// Real work leads; sample/fictional exercises only fill remaining slots, never crowd it out.
+const featuredProjects = [...getRealProjects(), ...getSampleProjects()].slice(0, 3);
 
 export default function Home() {
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    setLoaded(true);
-  }, []);
-
   return (
     <>
       <style>{`
@@ -365,6 +357,19 @@ export default function Home() {
 
         .featured-card-info { padding: 24px; }
 
+        .featured-card-provenance {
+          font-family: var(--font-body);
+          font-size: 10px;
+          font-weight: 500;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--text-muted);
+          border: var(--border-w) solid var(--border-strong);
+          display: inline-block;
+          padding: 2px 8px;
+          margin-bottom: 10px;
+        }
+
         .featured-card-discipline {
           font-family: var(--font-body);
           font-size: 10px;
@@ -466,8 +471,7 @@ export default function Home() {
 
       <Nav activePage="home" />
 
-      <div className={loaded ? "loaded" : ""}>
-        <main>
+      <main>
           {/* HERO */}
           <section className="hero">
             <div className="hero-left">
@@ -557,6 +561,7 @@ export default function Home() {
                     </span>
                   </div>
                   <div className="featured-card-info">
+                    <span className="featured-card-provenance">{project.provenance}</span>
                     <p className="featured-card-discipline">{project.discipline}</p>
                     <h3 className="featured-card-name">{project.title}</h3>
                     <p className="featured-card-desc">{project.description}</p>
@@ -576,10 +581,9 @@ export default function Home() {
               Get in Touch <span className="arrow">&rarr;</span>
             </Link>
           </section>
-        </main>
+      </main>
 
-        <Footer />
-      </div>
+      <Footer />
     </>
   );
 }

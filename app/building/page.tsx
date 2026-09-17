@@ -146,6 +146,19 @@ export default function BuildingPage() {
 
         .project-card-info { padding: 24px 28px; }
 
+        .project-card-provenance {
+          font-family: var(--font-body);
+          font-size: 10px;
+          font-weight: 500;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--text-muted);
+          border: var(--border-w) solid var(--border-strong);
+          display: inline-block;
+          padding: 2px 8px;
+          margin-bottom: 10px;
+        }
+
         .project-card-discipline {
           font-family: var(--font-body);
           font-size: 10px;
@@ -238,6 +251,7 @@ export default function BuildingPage() {
                 )}
               </div>
               <div className="project-card-info">
+                <span className="project-card-provenance">{project.provenance}</span>
                 <p className="project-card-discipline">{project.discipline}</p>
                 <h3 className="project-card-title">{project.title}</h3>
                 <p className="project-card-year">{project.year}</p>

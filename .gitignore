@@ -42,3 +42,6 @@ next-env.d.ts
 
 # Windows zone identifier files
 *:Zone.Identifier
+
+# Preserved raw media originals (too large for git; kept locally only)
+/media-originals/
