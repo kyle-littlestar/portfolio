@@ -66,7 +66,7 @@ export const projects: Project[] = [
     role: ["UX Research", "Interaction Design", "Wireframing", "Prototyping", "Accessibility Review"],
     deliverables: ["Research Audit", "Persona & Journey Map", "Lo-fi & Hi-fi Wireframes", "Interactive Figma Prototype", "Case Study"],
     mediaType: "image",
-    mediaSrc: "/projects/flight-trip-planner/cover.png",
+    mediaSrc: "/projects/flight-trip-planner/cover.svg",
     featured: true,
     gallery: [],
   },
