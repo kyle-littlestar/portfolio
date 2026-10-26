@@ -2,12 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
-import { getRealProjects, getSampleProjects } from "@/lib/projects-data";
+import { getRealProjects } from "@/lib/projects-data";
 
 const DISCIPLINES = ["Graphic Design", "Motion Design", "UI / UX", "Photography"];
 
-// Real work leads; sample/fictional exercises only fill remaining slots, never crowd it out.
-const featuredProjects = [...getRealProjects(), ...getSampleProjects()].slice(0, 3);
+// Feature the current portfolio projects.
+const featuredProjects = getRealProjects().slice(0, 3);
 
 export default function Home() {
   return (

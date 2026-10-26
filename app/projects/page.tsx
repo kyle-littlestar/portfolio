@@ -18,7 +18,6 @@ export default function ProjectsPage() {
   );
 
   const realWork = filtered.filter((p) => p.provenance !== "Sample exercise");
-  const sampleWork = filtered.filter((p) => p.provenance === "Sample exercise");
 
   return (
     <>
@@ -264,37 +263,7 @@ export default function ProjectsPage() {
           </>
         )}
 
-        {sampleWork.length > 0 && (
-          <>
-            <h2 className="group-heading">Sample Exercises</h2>
-            <p className="group-subtitle">
-              Self-directed practice pieces — fictional briefs I set for myself to explore craft.
-              Not client work, no real outcomes to report.
-            </p>
-            <div className="project-grid">
-              {sampleWork.map((project) => (
-                <Link key={project.id} href={`/projects/${project.slug}`} className="project-card">
-                  <div className="project-card-media">
-                    {project.mediaType === "image" && project.mediaSrc ? (
-                      <Image src={project.mediaSrc} alt={project.title} fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: "cover", objectPosition: "top" }} />
-                    ) : (
-                      <div className="project-card-color" style={{ background: project.mediaColor || "#1A1714" }}>
-                        <span>Preview</span>
-                      </div>
-                    )}
-                  </div>
-                  <div className="project-card-info">
-                    <span className="project-card-provenance">{project.provenance}</span>
-                    <p className="project-card-discipline">{project.discipline}</p>
-                    <h3 className="project-card-title">{project.title}</h3>
-                    <p className="project-card-year">{project.year}</p>
-                    <p className="project-card-desc">{project.description}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </>
-        )}
+
       </main>
 
       <Footer />
